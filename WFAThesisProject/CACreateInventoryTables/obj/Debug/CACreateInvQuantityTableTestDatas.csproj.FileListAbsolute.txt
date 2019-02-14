@@ -1,0 +1,7 @@
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\bin\Debug\CACreateInventoryQuantityTable.exe.config
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\bin\Debug\CACreateInventoryQuantityTable.exe
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\bin\Debug\CACreateInventoryQuantityTable.pdb
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\obj\Debug\CACreateInvQuantityTableTestDatas.csprojAssemblyReference.cache
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\obj\Debug\CACreateInvQuantityTableTestDatas.csproj.CoreCompileInputs.cache
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\obj\Debug\CACreateInventoryQuantityTable.exe
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\CACreateInventoryQuantityTable\obj\Debug\CACreateInventoryQuantityTable.pdb
