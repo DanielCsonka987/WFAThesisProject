@@ -1,1 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Connection><host>localhost</host><port>3306</port><DBname>vegyszerraktar</DBname><user>root</user><password /><pdfOutputOrders /><pdfInputSafeSheets>http://localhost/SafetyDataSheets/</pdfInputSafeSheets></Connection>
