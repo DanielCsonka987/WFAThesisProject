@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WFAThesisProject.ServiceProfileWinController" Collapsed="true">
+    <Position X="3" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EAgAgQBhAAQCAAoEAMAyIAlAIARAlAABkAACRwAIIBA=</HashCode>
+      <FileName>ServProfileManage\ServiceProfileWinController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ServiceProfileManage" Collapsed="true">
+    <Position X="3.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAkAAAAAAIAEQABAAAAAAAAAAIAAAgBEAAAAACAAAAA=</HashCode>
+      <FileName>ServProfileManage\ServiceProfileManage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ProfileManage.PersonalProfileModelDB" Collapsed="true">
+    <Position X="5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAACSACBAgAAAgAAAACAIAAAACAAAFAAACgAAE=</HashCode>
+      <FileName>ServProfileManage\PersonalProfileModelDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ProfileManage.PersonalProfileModelPDFhc" Collapsed="true">
+    <Position X="0.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABABAIASAAAAAIAAAQAKAIAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ServProfileManage\PersonalProfileModelPDFhc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ProfileManage.ErrorServiceProfileReviseOldPwd" Collapsed="true">
+    <Position X="8" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServProfileManage\ErrorServiceProfileReviseOldPwd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ProfileManage.ErrorServiceProfileMange" Collapsed="true">
+    <Position X="7" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServProfileManage\ErrorServiceProfileMange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.ProfileManage.ErrorServiceProfileDetailsManage" Collapsed="true">
+    <Position X="8" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>ServProfileManage\ErrorServiceProfileDetailsManage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WFAThesisProject.InterfaceMySQLDBChannel" Collapsed="true">
+    <Position X="5" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>DAAgRIEAQAAgIUjiACABIAEAJAIQACgoMkEQBhAABCY=</HashCode>
+      <FileName>DBMSInterface\InterfaceMySQLDBChannel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
