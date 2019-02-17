@@ -1,4 +1,12 @@
 
 markovicsi01	-> Valami1_
 
+kissga01	-> Valami2*
+
+kovacsg01	-> Valami2_
+
+kovacsg02	-> Valami3*
+
+feherg01	-> Valami3_
+
 ellenor01	-> 1KomOly-
