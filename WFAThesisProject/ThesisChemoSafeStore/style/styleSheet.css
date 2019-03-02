@@ -1,0 +1,58 @@
+
+#header, #menu{
+    background-image: url("green-gradient.jpg");
+}
+#header{
+    -ms-background-size: cover; 
+    -o-background-size: cover; 
+    -moz-background-size: cover; 
+    -webkit-background-size: cover;
+    font-family: Calibri;
+
+}
+#header #logo{
+    color: white;
+    font-size: 2em;
+    text-decoration: none;
+    font-style: italic;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.menuitem{
+    background: #c82333;
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 1em;
+    padding: 0.2em;
+}
+.sheet{
+    font-size: 1.7em;
+}
+p, h5 {
+    margin-top: 1em;
+}
+#errorMessages{
+    color: red;
+}
+#screener{
+    margin-top: 1em;
+}
+#screener p{
+    display: inline;
+}
+#screener button{
+    padding: 3px;
+}
+#selecter a{
+    padding-left: 1em;
+}
+#backStoreListsFromSheet{
+    opacity: 0.6;
+    top: 3em;
+    position: absolute;
+}
