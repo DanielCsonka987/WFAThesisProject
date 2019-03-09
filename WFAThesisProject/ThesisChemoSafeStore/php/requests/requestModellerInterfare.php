@@ -58,7 +58,7 @@ class renewCancelledRequest{
     private $conn;
     private $queryOfRenewCancelledRequest = 
             "UPDATE keresek SET keres_erveny=1, keres_modosit=?"
-            . " WHERE keres_id=? AND keres_teljesit=0";
+            . " WHERE keres_id=? AND keres_teljesit=0 AND keres_erveny = 0";
     
     public function setConnectionDatas($connection){
         $this->conn = $connection;

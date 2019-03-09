@@ -29,11 +29,11 @@ class getActiveRequestsOfUserPlace{
         }
         $stmt = $this->conn->prepare($this->queryOfActiveRequests);
         $stmt -> bind_param("sii",$userArea, $this->offset, $this->limit);
-
         if($stmt->execute()){
             $activeRequestsTable = $stmt->get_result();
             if($activeRequestsTable -> num_rows > 0){
                 $stmt -> close();
+                
                 return $activeRequestsTable;
             } else {
                 $stmt -> close();

@@ -3,7 +3,7 @@
 class doesLoggingInFirst{
     
     private $queryForFindUser = "SELECT user_id, jelszo FROM felhaszn"
-            . " WHERE user_name=?";
+            . " WHERE user_name=? AND hozzafer_ervenyes <> 0";
     private $conn;
     private $userid;
     private $username;

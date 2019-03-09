@@ -14,7 +14,7 @@ class getHistoricRequestsOfUserPlace{
             . " WHERE keresek.user_id = csoport.user_id"
             . " AND raktmennyiseg.termek_quant_id = keresek.termek_quant_id"
             . " AND raktminoseg.termek_min_id = raktmennyiseg.termek_min_id"
-            . " AND keresek.keres_erveny = 0 AND keresek.keres_teljesit<>0"
+            . " AND keresek.keres_erveny = 2 AND keresek.keres_teljesit<>0"
             . " LIMIT ?,?";  
     
     public function setConnectionDatas($connection, $screenAmount, $screenStart){
@@ -54,7 +54,7 @@ class getHistoricFullNumber{
             "SELECT COUNT(keresek.keres_id)"
             . " FROM keresek,(SELECT user_id, vez_nev, ker_nev FROM felhasznadatok WHERE terulet =?) AS csoport"
             . " WHERE keresek.user_id = csoport.user_id"
-            . " AND keresek.keres_erveny = 0 AND keresek.keres_teljesit<>0";  
+            . " AND keresek.keres_erveny = 2 AND keresek.keres_teljesit<>0";  
     
     public function setConnectionDatas($connection){
         $this->conn = $connection;
