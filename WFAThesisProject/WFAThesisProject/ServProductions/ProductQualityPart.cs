@@ -15,7 +15,7 @@ namespace WFAThesisProject
         public int productDanger { get; set; }
         public string productSheet { get; set; }
 
-        public int productIndex { get; set; }
+        public int productQualId { get; set; }
         public int productModifiedBy { get; set; }
         public string productModifiedThen { get; set; }
         public bool productValidity { get; set; }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WFAThesisProject.ServProductions;
 
 namespace WFAThesisProject
 {
@@ -38,10 +40,10 @@ namespace WFAThesisProject
             tempOfCangesQuality.productQantUnit = txtbQuantUn.Text;
 
             if (typeOfDataManaging == ProductWindowPurpose.NEW)
-                tempOfCangesQuality.productIndex = 0;  //validity automaticly created true
+                tempOfCangesQuality.productQualId = 0;  //validity automaticly created true
             else
             {
-                tempOfCangesQuality.productIndex = indexProd;
+                tempOfCangesQuality.productQualId = indexProd;
                 tempOfCangesQuality.productValidity = true;     //in case reactivate
             }
         }
@@ -51,43 +53,63 @@ namespace WFAThesisProject
         /// </summary>
         public void maintainTheECorrectEvent()
         {
-            if (typeOfDataManaging == ProductWindowPurpose.NEW)
+            try
             {
-                if (typeOfInformationIsThreathing)
+                if (typeOfDataManaging == ProductWindowPurpose.NEW)
+                {
+                    if (typeOfInformationIsThreathing)
+                        serviceProducts.setNewRecProdQuantity(tempOfChangesStripping);
+                    else
+                        serviceProducts.setNewRecProdQuality(tempOfCangesQuality);
+                }
+                if (typeOfDataManaging == ProductWindowPurpose.MODIFY)
+                {
+                    if (typeOfInformationIsThreathing)
+                        serviceProducts.setModifyRecProdQuantity(tempOfChangesStripping, oldStripping);
+                    else
+                        serviceProducts.setModifyRecProdQuality(tempOfCangesQuality);
+                }
+                if (typeOfDataManaging == ProductWindowPurpose.DELETE)
+                {
+                    if (typeOfInformationIsThreathing)
+                        serviceProducts.setDeleteRecProdQuantity(indexProd.ToString(), oldStripping);
+                    else
+                        serviceProducts.setDeleteRecProdQuality(indexProd.ToString());
+                }
+                if (typeOfDataManaging == ProductWindowPurpose.UNDELETE)
+                {
+                    if (typeOfInformationIsThreathing)
+                        serviceProducts.setUndeleteRecProdQuantity(indexProd.ToString(), oldStripping);
+                    else
+                        serviceProducts.setUndeleteRecProdQuality(indexProd.ToString());
+                }
+                if (typeOfDataManaging == ProductWindowPurpose.DETAILS)  //only when quantity mode active
+                {
+                    serviceProducts.getTheSaftyDataSheet(sheetNameTemp);
+                }
+                if (typeOfDataManaging == ProductWindowPurpose.BRANDNEWSTRIPPING)    //only when quality mode active
+                {
                     serviceProducts.setNewRecProdQuantity(tempOfChangesStripping);
-                else
-                    serviceProducts.setNewRecProdQuality(tempOfCangesQuality);
+                }
             }
-            if (typeOfDataManaging == ProductWindowPurpose.MODIFY)
+            catch (ErrorServiceProd e)
             {
-                if (typeOfInformationIsThreathing)
-                    serviceProducts.setModifyRecProdQuantity(tempOfChangesStripping, oldStripping);
-                else
-                    serviceProducts.setModifyRecProdQuality(tempOfCangesQuality);
+                errorHandle(e.Message);
             }
-            if (typeOfDataManaging == ProductWindowPurpose.DELETE)
+            catch(Exception e)
             {
-                if (typeOfInformationIsThreathing)
-                    serviceProducts.setDeleteRecProdQuantity(indexProd.ToString(), oldStripping);
-                else
-                    serviceProducts.setDeleteRecProdQuality(indexProd.ToString());
-            }
-            if (typeOfDataManaging == ProductWindowPurpose.UNDELETE)
-            {
-                if (typeOfInformationIsThreathing)
-                    serviceProducts.setUndeleteRecProdQuantity(indexProd.ToString(), oldStripping);
-                else
-                    serviceProducts.setUndeleteRecProdQuality(indexProd.ToString());
-            }
-            if (typeOfDataManaging == ProductWindowPurpose.DETAILS)  //only when quantity mode active
-            {
-                serviceProducts.getTheSaftyDataSheet(sheetNameTemp);
-            }
-            if (typeOfDataManaging == ProductWindowPurpose.BRANDNEWSTRIPPING)    //only when quality mode active
-            {
-                serviceProducts.setNewRecProdQuantity(tempOfChangesStripping);
+                errorHandle("Ismeretlen hiba történt (ProdWinContr) " + e.Message);
             }
         }
 
+        /// <summary>
+        /// handle errors, gives messages
+        /// </summary>
+        /// <param name="message"></param>
+        private void errorHandle(string message)
+        {
+            MetroFramework.MetroMessageBox.Show(parentProductWindow, message, "Figyelmeztetés",
+                MessageBoxButtons.OK, MessageBoxIcon.Error, 200);
+        }
     }
 }

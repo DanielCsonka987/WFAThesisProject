@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCrypt;
-using WFAThesisProject.ProfileManage;
+using WFAThesisProject.ServProfileManage;
 using WFAThesisProject.UserNamePasswordManage;
 
 namespace WFAThesisProject
@@ -35,6 +35,10 @@ namespace WFAThesisProject
             catch (ErrorServiceProfileMange e)
             {
                 handleError(e.Message);
+            }
+            catch (ErrorServiceProfileManagePDFOpenProb e)
+            {
+                handleWarning("A fálj elkészült, de megnyitása sikertelen " + e.Message);
             }
         }
 
@@ -166,6 +170,16 @@ namespace WFAThesisProject
         /// </summary>
         /// <param name="message">the message of the exception</param>
         private void handleError(string message)
+        {
+            MetroFramework.MetroMessageBox.Show(personalWin, message, "Figyelmeztetés",
+                MessageBoxButtons.OK, MessageBoxIcon.Error, 200);
+        }
+
+        /// <summary>
+        /// general errorhandle
+        /// </summary>
+        /// <param name="message">the message of the exception</param>
+        private void handleWarning(string message)
         {
             MetroFramework.MetroMessageBox.Show(personalWin, message, "Figyelmeztetés",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning, 200);

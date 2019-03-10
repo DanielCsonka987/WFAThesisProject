@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WFAThesisProject.ServProductions;
 using WFAThesisProject.UserRightsManage;
 
 namespace WFAThesisProject
@@ -21,25 +22,32 @@ namespace WFAThesisProject
         {
             tileProd.Click += (s, e) =>
             {
+                removeDoubleClickEvent(mgrid);
+                mgrid.Visible = true;
                 actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANStripAct;
                 productService = new ServiceProducts(dbci, mainWindow, setOfUserDetails.userId);
                 panelOfCommLine.Visible = false;
                 if (rightToManageStore == RightLevels.READ)
                 {
-                    loadAppropiateProductonGridView();
+                    actServiceViewStandard = FromMainServiceViewStandard.READ;
+                    loadAppropriateProductonGridView();
+                    loadAppropiateProductionCommandLineView();
+                    initializeProdAlternativeCommandLineEvent();
                     initializeProdGridViewEvent();
                 }
                 else if (rightToManageStore == RightLevels.MODiFY)
                 {
-                    loadAppropiateProductonGridView();
-                    initializeProdGridViewEvent();
-                    initializeCommandLineEvents();
+                    actServiceViewStandard = FromMainServiceViewStandard.OTHER;
+                    loadAppropriateProductonGridView();
                     loadAppropiateProductionCommandLineView();
+                    initializeProdFullCommandLineEvents();
                 }
             };
         }
-
-        private void initializeCommandLineEvents()
+        /// <summary>
+        /// sets the commandLine events - in case of MODIFY permission
+        /// </summary>
+        private void initializeProdFullCommandLineEvents()
         {
             setTheNewBtn1ProdEvents();
             setTheNewBtn2ProdEvents();
@@ -48,7 +56,16 @@ namespace WFAThesisProject
             setTheNewBtn5ProdEvents();
             setTheNewBtn6ProdEvents();
         }
-
+        /// <summary>
+        /// sets the btn 6 event - in case of READ permission
+        /// </summary>
+        private void initializeProdAlternativeCommandLineEvent()
+        {
+            setTheNewBtn6ProdEvents();
+        }
+        /// <summary>
+        /// sets the gridview event - in case of READ permission
+        /// </summary>
         private void initializeProdGridViewEvent()
         {
             removeDoubleClickEvent(mgrid);
@@ -56,21 +73,30 @@ namespace WFAThesisProject
             {
                 if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct ||
-                        actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis)
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductFullRow> allList = productService.getFullListOfProductions();
-                        ProductFullRow row = allList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        int indexFromGrid = mgrid.SelectedRows[0].Index;
+                        int recIdentif = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct ||
+                            actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis)
+                        {
+                            ProductFullRow row = productService.getFullistContainerOfProduction(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct ||
+                            actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis)
+                        {
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        }
                     }
-                    else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct ||
-                        actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis)
+                    catch (ErrorServiceProd w)
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductQualityPart> partList = productService.getPartListOfProductions();
-                        ProductQualityPart row = partList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        errorHandle(w.Message);
+                    }
+                    catch (Exception w)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainGrid) " + w.Message);
                     }
                 }
             };

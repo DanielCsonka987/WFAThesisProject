@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WFAThesisProject.ServProductions;
 
 namespace WFAThesisProject
 {
@@ -14,16 +15,16 @@ namespace WFAThesisProject
         private ProductsModelStrippingTable modelQuantities;
         private ProductsModelQualityTable modelQualities;
         private ProductsModelSheets modelSheets;
-        private Form parent;
+        private Form parentMain;
         private UserConnDetails dbci;
         private string userId;
         private List<ProductFullRow> prodFullList;
         private List<ProductQualityPart> prodPartList;
         private DataTable table;
 
-        public ServiceProducts(UserConnDetails dbci, Form parent, string userId)
+        public ServiceProducts(UserConnDetails dbci, Form parentMainWin, string userId)
         {
-            this.parent = parent;
+            this.parentMain = parentMainWin;
             this.dbci = dbci;
             this.userId = userId;
         }
@@ -37,8 +38,9 @@ namespace WFAThesisProject
         /// <returns>readed in datas</returns>
         public DataTable getTableOfProductsFullTable(bool mode)
         {
-            modelReadingInDatas = new ProductsModelReadIn(dbci, parent);
+            modelReadingInDatas = new ProductsModelReadIn(dbci, parentMain);
             table = new DataTable();
+            table.Columns.Add("Srsz.",typeof(int));
             table.Columns.Add("Terméknév", typeof(string));   //name, typeof(integer)
             table.Columns.Add("Kiszerelés", typeof(int));
             table.Columns.Add("Mértékegység", typeof(string));
@@ -51,30 +53,40 @@ namespace WFAThesisProject
                 prodFullList = modelReadingInDatas.getProductsFullList(mode);
                 foreach (ProductFullRow cont in prodFullList)
                 {
-                    table.Rows.Add(cont.productName, cont.productStripping, cont.productQantUnit, cont.productDanger,
+                    table.Rows.Add(cont.strippId, cont.productName, cont.productStripping, cont.productQantUnit, cont.productDanger,
                         cont.productBarcode, cont.productPlace, cont.productQuantity);
                 }
 
                 return table;
             }
-            catch (ErrorServiceCreateDataTable)
+            catch (ErrorServiceCreateDataList e)
             {
-                errorHandle("Adattábla megalkotása sikertelen (CtrProdQuantDT)");
-                return null;
+                throw new ErrorServiceProd(e.Message);
             }
             catch (Exception e)
             {
-                errorHandle(e.Message);
-                return null;
+                throw new ErrorServiceProd("Ismeretlen hiba történt (ServProdQuantDT) " + e.Message);
             }
         }
         /// <summary>
         /// gets the list of the full-palet productions
         /// </summary>
         /// <returns>list of productions in ProdFullRow</returns>
-        public List<ProductFullRow> getFullListOfProductions()
+        public ProductFullRow getFullistContainerOfProduction(int stripId)
         {
-            return prodFullList;
+            try
+            {
+                foreach(ProductFullRow rec in prodFullList)
+                {
+                    if (rec.strippId == stripId)
+                        return rec;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceProd("A listaelem keresésnél hiba történt (ServProdQuantSeek) " + e.Message);
+            }
+            throw new ErrorServiceProd("A listaelem keresése sikertelen (ServProdQuantSeek)");
         }
         /// <summary>
         /// gets the username, who deleted a specific record in the 'raktmennyiseg' table
@@ -85,13 +97,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelReadingInDatas = new ProductsModelReadIn(dbci, parent);
+                modelReadingInDatas = new ProductsModelReadIn(dbci, parentMain);
                 return modelReadingInDatas.getWhoModifiedRecord(indexOfRecord);
             }
             catch (ErrorServiceWhoModified e)
             {
-                errorHandle(e.Message);
-                return null;
+                throw new ErrorServiceProd(e.Message);
             }
         }
 
@@ -105,12 +116,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQuantities = new ProductsModelStrippingTable(dbci, parent);
+                modelQuantities = new ProductsModelStrippingTable(dbci, parentMain);
                 modelQuantities.createNewProdQuantityRecord(row, userId);
             }
-            catch (Exception e)
+            catch (ErrorServiceNewRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
 
         }
@@ -125,12 +136,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQuantities = new ProductsModelStrippingTable(dbci, parent);
+                modelQuantities = new ProductsModelStrippingTable(dbci, parentMain);
                 modelQuantities.modifyProdQuantityRecord(row, oldStripping, userId);
             }
-            catch (Exception e)
+            catch (ErrorServiceUpdateRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         /// <summary>
@@ -142,12 +153,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQuantities = new ProductsModelStrippingTable(dbci, parent);
+                modelQuantities = new ProductsModelStrippingTable(dbci, parentMain);
                 modelQuantities.deleteProdQuantityRecord(index, stripping, userId);
             }
-            catch (Exception e)
+            catch (ErrorServiceDeleteRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
 
@@ -160,12 +171,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQuantities = new ProductsModelStrippingTable(dbci, parent);
+                modelQuantities = new ProductsModelStrippingTable(dbci, parentMain);
                 modelQuantities.renewProdQuantityRecord(index, stripping, userId);
             }
-            catch (Exception e)
+            catch (ErrorServiceRenewRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
 
@@ -184,9 +195,10 @@ namespace WFAThesisProject
             try
             {
                 //modelQualities = new ProductsModelQualityTable(,);
-                modelReadingInDatas = new ProductsModelReadIn(dbci, parent);
+                modelReadingInDatas = new ProductsModelReadIn(dbci, parentMain);
                 prodPartList = modelReadingInDatas.getProductsPartList(mode);
                 table = new DataTable();
+                table.Columns.Add("Srsz.", typeof(int));
                 table.Columns.Add("Terméknév", typeof(string));   //name, typeof(integer)
                 table.Columns.Add("Mértékegység", typeof(string));
                 table.Columns.Add("Veszély", typeof(int));
@@ -196,31 +208,43 @@ namespace WFAThesisProject
 
                 foreach (ProductQualityPart cont in prodPartList)
                 {
-                    table.Rows.Add(cont.productName, cont.productQantUnit, cont.productDanger,
+                    table.Rows.Add(cont.productQualId, cont.productName, cont.productQantUnit, cont.productDanger,
                         cont.productSubcontr, cont.productDescr
                         /*modelQualities.getWhoModifiedQuality(cont.productModifiedBy)*/);
                 }
 
                 return table;
             }
-            catch (ErrorServiceCreateDataTable)
+            catch (ErrorServiceCreateDataList e)
             {
-                errorHandle("Adattábla megalkotása sikertelen (CtrProdDT)");
-                return null;
+                throw new ErrorServiceProd(e.Message);
             }
             catch (Exception e)
             {
-                errorHandle(e.Message);
-                return null;
+                throw new ErrorServiceProd("Ismertlen hiba történt (ServProdDT) " + e.Message);
             }
         }
         /// <summary>
-        /// gets the list of the content of the DataTable
+        /// gets the element of the chosen DataTable row
         /// </summary>
-        /// <returns>list of 'raktminoseg' talbe content</returns>
-        public List<ProductQualityPart> getPartListOfProductions()
+        /// <returns>container of 'raktminoseg' talbe</returns>
+        public ProductQualityPart getPartContainerOfChosenProductions(int prodId)
         {
-            return prodPartList;
+            try
+            {
+                foreach(ProductQualityPart prod in prodPartList)
+                {
+                    if (prod.productQualId == prodId)
+                    {
+                        return prod;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceProd("A listaelem keresésnél hiba történt (ServProdSeek) " + e.Message);
+            }
+            throw new ErrorServiceProd("A listaelem keresése sikertelen (ServProdSeek)");
         }
         /// <summary>
         /// gets the username, who deleted a specific record in the 'raktminoseg' table
@@ -231,13 +255,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelReadingInDatas = new ProductsModelReadIn(dbci, parent);
+                modelReadingInDatas = new ProductsModelReadIn(dbci, parentMain);
                 return modelReadingInDatas.getWhoModifiedRecord(indexOfRecord);
             }
             catch (ErrorServiceWhoModified e)
             {
-                errorHandle(e.Message);
-                return null;
+                throw new ErrorServiceProd(e.Message);
             }
 
 
@@ -251,12 +274,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQualities = new ProductsModelQualityTable(dbci, parent);
+                modelQualities = new ProductsModelQualityTable(dbci, parentMain);
                 modelQualities.createNewProdQualityRecord(row, userId);
             }
             catch (ErrorServiceNewRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         /// <summary>
@@ -268,12 +291,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQualities = new ProductsModelQualityTable(dbci, parent);
+                modelQualities = new ProductsModelQualityTable(dbci, parentMain);
                 modelQualities.modifyProdQualityRecord(row, userId);
             }
             catch (ErrorServiceUpdateRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         /// <summary>
@@ -284,12 +307,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQualities = new ProductsModelQualityTable(dbci, parent);
+                modelQualities = new ProductsModelQualityTable(dbci, parentMain);
                 modelQualities.deleteProdQualityRecord(index, userId);
             }
             catch (ErrorServiceDeleteRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         /// <summary>
@@ -300,12 +323,12 @@ namespace WFAThesisProject
         {
             try
             {
-                modelQualities = new ProductsModelQualityTable(dbci, parent);
+                modelQualities = new ProductsModelQualityTable(dbci, parentMain);
                 modelQualities.renewProdQualityRecord(index, userId);
             }
             catch (ErrorServiceRenewRecord e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         #endregion
@@ -314,14 +337,14 @@ namespace WFAThesisProject
 
         public List<string> getListOfSubcontr()
         {
-            modelReadingInDatas = new ProductsModelReadIn(dbci, parent);
+            modelReadingInDatas = new ProductsModelReadIn(dbci, parentMain);
             return modelReadingInDatas.getSubcontrList();
         }
 
 
         public bool checkBarcodeUniquity(string text)
         {
-            modelQuantities = new ProductsModelStrippingTable(dbci, parent);
+            modelQuantities = new ProductsModelStrippingTable(dbci, parentMain);
             return modelQuantities.checkBarcodeUniquity(text);
         }
         /*
@@ -346,21 +369,13 @@ namespace WFAThesisProject
             }
             catch (ErrorServiceProdDownlSafetySheet e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
             catch (ErrorServiceProdManageSafetySheet e)
             {
-                errorHandle(e.Message);
+                throw new ErrorServiceProd(e.Message);
             }
         }
         #endregion
-
-        private void errorHandle(string msg)
-        {
-            MetroFramework.MetroMessageBox.Show(parent, msg, "Figyelmeztetés",
-                MessageBoxButtons.OK, MessageBoxIcon.Error, 200);
-        }
-
-        
     }
 }

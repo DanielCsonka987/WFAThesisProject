@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WFAThesisProject.ServProductions;
 
 namespace WFAThesisProject
 {
@@ -16,20 +17,30 @@ namespace WFAThesisProject
             btn1.Click += (e, a) => {
                 if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductQualityPart> productsPartList = productService.getPartListOfProductions();
-                        ProductQualityPart row = productsPartList[index];
-                        row.productValidity = true;
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.BRANDNEWSTRIPPING, productService, mainWindow);
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)
+                        {
+                            int indexFromGrid = mgrid.SelectedRows[0].Index;
+                            int recId = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recId);
+                            row.productValidity = true;
+                            productsManageWindow = new FormServiceProductsWindow(row,
+                                ProductWindowPurpose.BRANDNEWSTRIPPING, productService, mainWindow);
+                        }
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //normal show details of quantity
+                        {
 
+                            //create new ordering record is needed - case of ProdMode StripAct
+                        }
                     }
-
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //normal show details of quantity
+                    catch (ErrorServiceProd k)
                     {
-
-                        //create new ordering record is needed - case of ProdMode StripAct
+                        errorHandle(k.Message);
+                    }
+                    catch (Exception k)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainProdBtn1) " + k.Message);
                     }
                 }
             };
@@ -39,23 +50,35 @@ namespace WFAThesisProject
         {
             removeClickEvent((Button)btn2);
             btn2.Click += (e, a) => {
-                if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //creates new (act) strippingRecord
+                if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (mgrid.SelectedRows[0].Index != -1)
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductFullRow> productsFullList = productService.getFullListOfProductions();
-                        ProductFullRow row = productsFullList[index];
-                        row.productValidity = true;
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.NEW, productService, mainWindow);
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //creates new (act) strippingRecord
+                        {
+                            int indexFromGrid = mgrid.SelectedRows[0].Index;
+                            int stripId = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                             
+                            ProductFullRow row = productService.getFullistContainerOfProduction(stripId);
+                            row.productValidity = true;
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.NEW, productService, mainWindow);
+                        }
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //creates new (act) qualRecord
+                        {
+                            ProductQualityPart row = new ProductQualityPart();
+                            row.productValidity = true;
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.NEW, productService, mainWindow);
+                        }
                     }
-                }
-                if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //creates new (act) qualRecord
-                {
-                    ProductQualityPart row = new ProductQualityPart();
-                    row.productValidity = true;
-                    productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.NEW, productService, mainWindow);
-                }
+                    catch (ErrorServiceProd k)
+                    {
+                        errorHandle(k.Message);
+                    }
+                    catch (Exception k)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainProdBtn2) " + k.Message);
+                    }
+                } 
             };
         }
 
@@ -66,19 +89,28 @@ namespace WFAThesisProject
             btn3.Click += (e, a) => {
                 if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //modify the active qualRec
-                    { 
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductQualityPart> productsFullList = productService.getPartListOfProductions();
-                        ProductQualityPart row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.MODIFY, productService, mainWindow);
-                    }
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //modify the active quantRec
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductFullRow> productsFullList = productService.getFullListOfProductions();
-                        ProductFullRow row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.MODIFY, productService, mainWindow);
+                        int indexFromGrid = mgrid.SelectedRows[0].Index;
+                        int recIdentif = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //modify the active qualRec
+                        {
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.MODIFY, productService, mainWindow);
+                        }
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //modify the active quantRec
+                        {
+                            ProductFullRow row = productService.getFullistContainerOfProduction(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.MODIFY, productService, mainWindow);
+                        }
+                    }
+                    catch (ErrorServiceProd k)
+                    {
+                        errorHandle(k.Message);
+                    }
+                    catch (Exception k)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainProdBtn3) " + k.Message);
                     }
                 }
             };
@@ -91,35 +123,40 @@ namespace WFAThesisProject
             btn4.Click += (e, a) => {
                 if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //delete activeQualRec
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductQualityPart> productsFullList = productService.getPartListOfProductions();
-                        ProductQualityPart row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DELETE, productService, mainWindow);
+                        int indexFromGrid = mgrid.SelectedRows[0].Index;
+                        int recIdentif = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct)     //delete activeQualRec
+                        {
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DELETE, productService, mainWindow);
 
-                    }
-                    else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis)     //react passtiveQualRec 
-                    {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductQualityPart> productsFullList = productService.getPartListOfProductions();
-                        ProductQualityPart row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.UNDELETE, productService, mainWindow);
-                    }
-                    else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //delete activeQuantRec
-                    {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductFullRow> productsFullList = productService.getFullListOfProductions();
-                        ProductFullRow row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DELETE, productService, mainWindow);
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis)     //react passtiveQualRec 
+                        {
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.UNDELETE, productService, mainWindow);
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)     //delete activeQuantRec
+                        {
+                            ProductFullRow row = productService.getFullistContainerOfProduction(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DELETE, productService, mainWindow);
 
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis)     //react passiveQuantRec
+                        {
+                            ProductFullRow row = productService.getFullistContainerOfProduction(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.UNDELETE, productService, mainWindow);
+                        }
                     }
-                    else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis)     //react passiveQuantRec
+                    catch (ErrorServiceProd k)
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        List<ProductFullRow> productsFullList = productService.getFullListOfProductions();
-                        ProductFullRow row = productsFullList[index];
-                        productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.UNDELETE, productService, mainWindow);
+                        errorHandle(k.Message);
+                    }
+                    catch (Exception k)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainProdBtn4) "+k.Message);
                     }
                 }
             };
@@ -130,29 +167,33 @@ namespace WFAThesisProject
         {
             removeClickEvent((Button)btn5);
             btn5.Click += (e, a) => {
-                if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct) //it switches to qualDel
+                if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANQualiHis;
-                    loadAppropiateProductonGridView();
-                    loadAppropiateProductionCommandLineView();
-                }
-                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis) //it swhitches to strippAct
-                {
-                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANStripAct;
-                    loadAppropiateProductonGridView();
-                    loadAppropiateProductionCommandLineView();
-                }
-                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct) //it switches to strippDel
-                {
-                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANStripHis;
-                    loadAppropiateProductonGridView();
-                    loadAppropiateProductionCommandLineView();
-                }
-                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis) //it switches to qualtAct
-                {
-                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANQualiAct;
-                    loadAppropiateProductonGridView();
-                    loadAppropiateProductionCommandLineView();
+                    try
+                    {
+                        int indexFromGrid = mgrid.SelectedRows[0].Index;
+                        int recIdentif = (int)mgrid.Rows[indexFromGrid].Cells[0].Value;
+                        if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct ||
+                            actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis)
+                        {
+                            ProductFullRow row = productService.getFullistContainerOfProduction(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct ||
+                            actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis)
+                        {
+                            ProductQualityPart row = productService.getPartContainerOfChosenProductions(recIdentif);
+                            productsManageWindow = new FormServiceProductsWindow(row, ProductWindowPurpose.DETAILS, productService, mainWindow);
+                        }
+                    }
+                    catch (ErrorServiceProd w)
+                    {
+                        errorHandle(w.Message);
+                    }
+                    catch (Exception w)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainGrid) " + w.Message);
+                    }
                 }
             };
         }
@@ -162,9 +203,29 @@ namespace WFAThesisProject
             removeClickEvent((Button)btn6);
             btn6.Click += (e, a) => {
 
-                if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct)
+                if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiAct) //it switches to qualDel
                 {
-                    //possibly function - creating inventory analysis
+                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANQualiHis;
+                    loadAppropriateProductonGridView();
+                    loadAppropiateProductionCommandLineView();
+                }
+                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANQualiHis) //it swhitches to strippAct
+                {
+                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANStripAct;
+                    loadAppropriateProductonGridView();
+                    loadAppropiateProductionCommandLineView();
+                }
+                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripAct) //it switches to strippDel
+                {
+                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANStripHis;
+                    loadAppropriateProductonGridView();
+                    loadAppropiateProductionCommandLineView();
+                }
+                else if (actServiceForSubEvents == FormMainServiceMode.PRODUCTSMANStripHis) //it switches to qualtAct
+                {
+                    actServiceForSubEvents = FormMainServiceMode.PRODUCTSMANQualiAct;
+                    loadAppropriateProductonGridView();
+                    loadAppropiateProductionCommandLineView();
                 }
 
             };

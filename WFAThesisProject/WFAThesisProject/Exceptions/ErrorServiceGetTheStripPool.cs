@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WFAThesisProject.GeneralExceptions
 {
-    public class ErrorServiceRequOrderGetTheStripPool :Exception
+    public class ErrorServiceGetTheStripPool :Exception
     {
-        public ErrorServiceRequOrderGetTheStripPool(string message) : base(message)
+        public ErrorServiceGetTheStripPool(string message) : base(message)
         {
 
         }

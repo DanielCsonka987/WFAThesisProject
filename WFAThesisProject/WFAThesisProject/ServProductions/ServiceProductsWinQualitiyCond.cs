@@ -145,7 +145,7 @@ namespace WFAThesisProject
 
             fillAndAdjustSubcontr(prod.productSubcontr);
 
-            indexProd = prod.productIndex;
+            indexProd = prod.productQualId;
             dataActOrHis = prod.productValidity;
             sheetNameTemp = prod.productSheet;
 

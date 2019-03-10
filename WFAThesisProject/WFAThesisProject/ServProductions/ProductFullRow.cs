@@ -20,7 +20,8 @@ namespace WFAThesisProject
         public string productPlace { get; set; }
         public string productBarcode { get; set; }
 
-        public int productIndex { get; set; }
+        public int producQualId { get; set; }
+        public int strippId { get; set; }
         public int productModifiedBy { get; set; }
         public string productModifiedThen { get; set; }
         public bool productValidity { get; set; }

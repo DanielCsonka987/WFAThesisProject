@@ -74,9 +74,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ErrorMigraDocFileOpening.cs" />
+    <Compile Include="FormServiceOrdBookArriveWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormServiceOrdBookArriveWin.Designer.cs">
+      <DependentUpon>FormServiceOrdBookArriveWin.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogingIn\ErrorServiceLoginAuthentic.cs" />
     <Compile Include="LogingIn\ErrorServiceLoginInfoCollect.cs" />
+    <Compile Include="MainControllers\MainControllerOrdering.cs" />
+    <Compile Include="MainControllers\MainControllerOrderingCommView.cs" />
     <Compile Include="MainControllers\MainControllerRights.cs" />
+    <Compile Include="MainControllers\MainControllerOrderingCommEvents.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheArrivedPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheBookedPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheCancelledPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheFailedPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheMissingPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingGetTheNotedPool.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingSetBookedAsArrived.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingSetFailed.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingSetMissingRecord.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingSetNotedAsBooked.cs" />
+    <Compile Include="ServOrdering\ErrorOrderingSetPartlyArrivedRecord.cs" />
+    <Compile Include="ServOrdering\ErrorServiceOrdering.cs" />
+    <Compile Include="ServOrdering\OrderingArrived.cs" />
+    <Compile Include="ServOrdering\OrderingBooked.cs" />
+    <Compile Include="ServOrdering\OrderingCancelled.cs" />
+    <Compile Include="ServOrdering\OrderingFailed.cs" />
+    <Compile Include="ServOrdering\OrderingMissing.cs" />
+    <Compile Include="ServOrdering\OrderingModellerReadIn.cs" />
+    <Compile Include="ServOrdering\OrderingModellerWriteOut.cs" />
+    <Compile Include="ServOrdering\OrderingNoted.cs" />
+    <Compile Include="ServOrdering\OrderingProdToChoose.cs" />
+    <Compile Include="ServOrdering\OrderingStrippingToChoose.cs" />
+    <Compile Include="ServOrdering\ServiceOrdBookArriveWinController.cs" />
+    <Compile Include="ServOrdering\ServiceOrdering.cs" />
+    <Compile Include="ServOrdering\ServiceOrderingWinEvents.cs" />
+    <Compile Include="ServOrdering\ServiceOrderingWinAdjustView.cs" />
+    <Compile Include="ServProductions\ErrorServiceProd.cs" />
+    <Compile Include="ServProfileManage\ErrorServiceProfileManagePDFOpenProb.cs" />
     <Compile Include="UserRightsManage\ErrorServiceRights.cs" />
     <Compile Include="UserRightsManage\ErrorServiceRightsGroupFreeToDelet.cs" />
     <Compile Include="UserRightsManage\ServiceRights.cs" />
@@ -86,9 +124,9 @@
     <Compile Include="UserRightsManage\ServiceRightsWinController.cs" />
     <Compile Include="ServProfileManage\ServiceProfileWinView.cs" />
     <Compile Include="ServRequests\ErrorServiceRequests.cs" />
-    <Compile Include="Exceptions\ErrorServiceGetTheAmount.cs" />
-    <Compile Include="ServRequests\ErrorServiceRequGetTheStripPool.cs" />
-    <Compile Include="ServRequests\ErrorServiceRequGetTheProdPool.cs" />
+    <Compile Include="ServRequests\ErrorServiceGetTheAmount.cs" />
+    <Compile Include="Exceptions\ErrorServiceGetTheStripPool.cs" />
+    <Compile Include="Exceptions\ErrorServiceGetTheProdPool.cs" />
     <Compile Include="LogingIn\ErrorServiceLoginDBAccess.cs" />
     <Compile Include="MainControllers\MainControllerRequestsCommEvents.cs" />
     <Compile Include="MainControllers\MainControllerRequestsCommView.cs" />
@@ -140,7 +178,7 @@
     <Compile Include="ServProductions\ErrorServiceProdManageSafetySheet.cs" />
     <Compile Include="LogingIn\ServiceLogin.cs" />
     <Compile Include="ServAccidents\FormMainController02Accidents.cs" />
-    <Compile Include="ServOrdering\FormMainController05Ordering.cs" />
+    <Compile Include="ServOrdering\ServiceOrderingWinController.cs" />
     <Compile Include="ServRequests\ServiceRequestsWinController.cs" />
     <Compile Include="ServProfileManage\ServiceProfileManage.cs" />
     <Compile Include="ServProfileManage\PersonalProfileModelDB.cs" />
@@ -151,7 +189,6 @@
     <Compile Include="ServSubcontractors\FormMainController06Subcontr.cs" />
     <Compile Include="ServUserManage\FormMainController01UsersManage.cs" />
     <Compile Include="Exceptions\ErrorServiceCreateDataList.cs" />
-    <Compile Include="Exceptions\ErrorServiceCreateDataTable.cs" />
     <Compile Include="Exceptions\ErrorServiceNewRecord.cs" />
     <Compile Include="Exceptions\ErrorServiceDeleteRecord.cs" />
     <Compile Include="ServProductions\ErrorServiceProdGetSubcontr.cs" />
@@ -175,12 +212,12 @@
     <Compile Include="Exceptions\ErrorMigraDocFileCreation.cs" />
     <Compile Include="UserNamePasswordManage\ErrorUDCompletlyness.cs" />
     <Compile Include="UserRightsManage\ErrorURLenght.cs" />
-    <Compile Include="LogingIn\ErrorXmlFileRead.cs" />
-    <Compile Include="LogingIn\ErrorXmlFileWrite.cs" />
+    <Compile Include="ServAdjustConnection\ErrorXmlFileRead.cs" />
+    <Compile Include="ServAdjustConnection\ErrorXmlFileWrite.cs" />
     <Compile Include="LogingIn\ServiceLoginModel.cs" />
-    <Compile Include="LogingIn\ModelManageIOConnFile.cs" />
+    <Compile Include="ServAdjustConnection\ModelManageIOConnFile.cs" />
     <Compile Include="ServUserManage\RandomPwdGenerator.cs" />
-    <Compile Include="MainControllers\ManageIOConnFileControl.cs" />
+    <Compile Include="ServAdjustConnection\ManageIOConnFileControl.cs" />
     <Compile Include="DBMSInterface\InterfaceMySQLStartDBConnect.cs" />
     <Compile Include="UserNamePasswordManage\AnalyzePassword.cs" />
     <Compile Include="UserNamePasswordManage\AnalyzeUsername.cs" />
@@ -190,7 +227,7 @@
     <Compile Include="FormServicePersonalHealth.Designer.cs">
       <DependentUpon>FormServicePersonalHealth.cs</DependentUpon>
     </Compile>
-    <Compile Include="ServOrdering\PDFOrderingFormCreate.cs" />
+    <Compile Include="ServOrdering\OrderingModellerPDF.cs" />
     <Compile Include="UserNamePasswordManage\SetOfUserDetails.cs" />
     <Compile Include="LogingIn\UserConnDetails.cs" />
     <Compile Include="DBMSInterface\ErrorDBMetroProblem.cs" />
@@ -250,6 +287,12 @@
     <EmbeddedResource Include="FormServiceAccidWindow.resx">
       <DependentUpon>FormServiceAccidWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormServiceOrdBookArriveWin.resx">
+      <DependentUpon>FormServiceOrdBookArriveWin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormServiceOrderingWindow.resx">
+      <DependentUpon>FormServiceOrderingWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormServiceProductsWindow.resx">
       <DependentUpon>FormServiceProductsWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -273,6 +316,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -290,8 +334,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="lab-overview.jpg" />
     <Content Include="vegyszerraktar.sql" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

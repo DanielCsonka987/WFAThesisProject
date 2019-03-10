@@ -10,5 +10,6 @@ namespace WFAThesisProject.ServRequests
     {
         public int termekMinId { get; set; }
         public string termekNev { get; set; }
+        public string beszallitoId { get; set; }
     }
 }

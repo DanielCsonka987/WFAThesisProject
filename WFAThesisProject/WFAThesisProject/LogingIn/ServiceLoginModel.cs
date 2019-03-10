@@ -14,7 +14,7 @@ namespace WFAThesisProject.LogingIn
         private InterfaceMySQLStartDBConnect startDBconnect;
         private InterfaceMySQLDBChannel mdi;
         private List<KeyValuePair<string, string>> paramOfQuery;
-        KeyValuePair<string, string> param;
+        private KeyValuePair<string, string> param;
         private Form parent;
         private string userId;
         private string hashedPwd;
@@ -56,6 +56,10 @@ namespace WFAThesisProject.LogingIn
             {
                 userId = resultIdentify[0][0];
                 return hashedPwd = resultIdentify[0][1];
+            }
+            else if (resultIdentify.Count == 0)
+            {
+                throw new ErrorServiceLoginDBAccess("Nem megfelelő felhasználónév vagy jelszó");
             }
             else
             {

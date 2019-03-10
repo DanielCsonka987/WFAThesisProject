@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WFAThesisProject
+namespace WFAThesisProject.Exceptions
 {
     class ErrorMigraDocFileCreation : Exception
     {

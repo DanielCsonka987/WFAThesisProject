@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WFAThesisProject.ProfileManage
+namespace WFAThesisProject.ServProfileManage
 {
     class PersonalProfileModelDB
     {

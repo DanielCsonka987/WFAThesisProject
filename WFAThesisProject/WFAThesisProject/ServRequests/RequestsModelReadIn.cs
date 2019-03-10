@@ -26,7 +26,7 @@ namespace WFAThesisProject.ServRequests
             "SELECT keresek.keres_datum, raktminoseg.termek_min_id, keresek.termek_quant_id, raktminoseg.termek_nev," +
             " raktmennyiseg.termek_kiszerel, raktmennyiseg.termek_hely, raktminoseg.termek_egyseg, felhasznadatok.vez_nev," +
             " felhasznadatok.ker_nev, felhasznadatok.terulet, keresek.keres_mennyiseg, keresek.keres_modosit, keresek.user_id," +
-            " raktminoseg.beszallito_id" +
+            " raktminoseg.beszallito_id, keresek.keres_id" +
             " FROM keresek, felhasznadatok, raktminoseg, raktmennyiseg" +
             " WHERE felhasznadatok.user_id = keresek.user_id AND raktmennyiseg.termek_quant_id = keresek.termek_quant_id" +
             " AND raktmennyiseg.termek_min_id = raktminoseg.termek_min_id" +
@@ -84,6 +84,7 @@ namespace WFAThesisProject.ServRequests
             }
             rrac.userId = Convert.ToInt32(rec[12]);
             rrac.termekBeszall = rec[13];
+            rrac.keresId = Convert.ToInt32(rec[14]);
             return rrac;
         }
         #endregion
@@ -92,7 +93,7 @@ namespace WFAThesisProject.ServRequests
         private string queryGetRequestsCalledOff =  //the orderer cancelled it
             "SELECT keresek.keres_datum, raktmennyiseg.termek_min_id, raktminoseg.termek_nev, keresek.termek_quant_id," +
             " raktmennyiseg.termek_kiszerel, raktminoseg.termek_egyseg, felhasznadatok.vez_nev, felhasznadatok.ker_nev," +
-            " felhasznadatok.terulet, keresek.keres_mennyiseg, raktminoseg.beszallito_id" +
+            " felhasznadatok.terulet, keresek.keres_mennyiseg, raktminoseg.beszallito_id, keresek.keres_id" +
             " FROM keresek, felhasznadatok, raktminoseg, raktmennyiseg " +
             " WHERE felhasznadatok.user_id = keresek.user_id AND keresek.termek_quant_id = raktmennyiseg.termek_quant_id" +
             " AND raktmennyiseg.termek_min_id = raktminoseg.termek_min_id" +
@@ -139,6 +140,7 @@ namespace WFAThesisProject.ServRequests
             rrco.userTerulet = rec[8];
             rrco.keresMennyiseg = Convert.ToInt32(rec[9]);
             rrco.termekBeszall = rec[10];
+            rrco.keresId = Convert.ToInt32(rec[11]);
             return rrco;
         }
         #endregion
@@ -148,11 +150,11 @@ namespace WFAThesisProject.ServRequests
             "SELECT keresek.keres_datum, raktmennyiseg.termek_min_id, raktminoseg.termek_nev, keresek.termek_quant_id," +
             " raktmennyiseg.termek_kiszerel, raktmennyiseg.termek_hely, raktminoseg.termek_egyseg, felhasznadatok.vez_nev," +
             " felhasznadatok.ker_nev, felhasznadatok.terulet, keresek.keres_mennyiseg, keresek.keres_teljesit," +
-            " keresek.keres_modosit, keresek.user_id, raktminoseg.beszallito_id" + 
+            " keresek.keres_modosit, keresek.user_id, raktminoseg.beszallito_id, keresek.keres_id" + 
             " FROM keresek, felhasznadatok, raktminoseg, raktmennyiseg" +
             " WHERE felhasznadatok.user_id = keresek.user_id AND keresek.termek_quant_id = raktmennyiseg.termek_quant_id" +
             " AND raktmennyiseg.termek_min_id = raktminoseg.termek_min_id" +
-            " AND keresek.keres_erveny= 0 AND keresek.keres_teljesit > 0";
+            " AND keresek.keres_erveny= 2 AND keresek.keres_teljesit > 0";
         /// <summary>
         /// read in the given out requests
         /// </summary>
@@ -206,6 +208,7 @@ namespace WFAThesisProject.ServRequests
             }
             rrgo.userId = Convert.ToInt32(rec[13]);
             rrgo.termekBeszall = rec[14];
+            rrgo.keresId = Convert.ToInt32(rec[15]);
             return rrgo;
         }
         #endregion
@@ -215,11 +218,11 @@ namespace WFAThesisProject.ServRequests
             "SELECT keresek.keres_datum, raktmennyiseg.termek_min_id, raktminoseg.termek_nev, keresek.termek_quant_id," +
             " raktmennyiseg.termek_kiszerel, raktminoseg.termek_egyseg, felhasznadatok.vez_nev, felhasznadatok.ker_nev," +
             " felhasznadatok.terulet, keresek.keres_mennyiseg, keresek.keres_modosit, keresek.user_id," +
-            " raktminoseg.beszallito_id" +
+            " raktminoseg.beszallito_id, keresek.keres_id" +
             " FROM keresek, felhasznadatok, raktminoseg, raktmennyiseg" +
             " WHERE felhasznadatok.user_id = keresek.user_id AND keresek.termek_quant_id = raktmennyiseg.termek_quant_id" +
             " AND raktmennyiseg.termek_min_id = raktminoseg.termek_min_id" +
-            " AND keresek.keres_erveny=0 AND keresek.keres_teljesit = 0 AND keresek.keres_modosit <> keresek.user_id";
+            " AND keresek.keres_erveny=3 AND keresek.keres_teljesit = 0";
         /// <summary>
         /// read in the direct deleted requests
         /// </summary>
@@ -271,6 +274,7 @@ namespace WFAThesisProject.ServRequests
             }
             rrd.userId = Convert.ToInt32(rec[11]);
             rrd.termekBeszall = rec[12];
+            rrd.keresId = Convert.ToInt32(rec[13]);
             return rrd;
         }
         #endregion
@@ -282,7 +286,7 @@ namespace WFAThesisProject.ServRequests
         /// reads in the possible users in the system - who made the modify
         /// </summary>
         private string queryReadingInTheProductsListToRenewAnActiveRequest =
-            "SELECT termek_min_id, termek_nev FROM raktminoseg";
+            "SELECT termek_min_id, termek_nev, beszallito_id FROM raktminoseg";
         /// <summary>
         /// reads in the products pool - name and its DB id
         /// </summary>
@@ -301,12 +305,13 @@ namespace WFAThesisProject.ServRequests
                     ProductToChoose prod = new ProductToChoose();
                     prod.termekMinId = Convert.ToInt32(arr[0]);
                     prod.termekNev = arr[1];
+                    prod.beszallitoId = arr[2];
                     rows.Add(prod);
                 }
             }
             catch (Exception e)
             {
-                throw new ErrorServiceRequGetTheProdPool
+                throw new ErrorServiceGetTheProdPool
                     ("A termékek körének lekérdezése sikertelen (ModReqProdPool) " + e.Message);
             }
             return rows;
@@ -341,7 +346,7 @@ namespace WFAThesisProject.ServRequests
             }
             catch (Exception e)
             {
-                throw new ErrorServiceRequOrderGetTheStripPool
+                throw new ErrorServiceGetTheStripPool
                     ("Az adott termék kiszereléseinek betöltése sikertelen (ModReqStrPool) " + e.Message);
             }
             return rows;

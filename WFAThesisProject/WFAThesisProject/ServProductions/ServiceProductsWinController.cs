@@ -9,7 +9,7 @@ namespace WFAThesisProject
 {
     public partial class ServiceProductsWinController
     {
-        private Form productWindow;
+        private Form parentProductWindow;
         private ServiceProducts serviceProducts;
         private int indexProd;              //at recollectiond datas this gives the value - it has no textbox to
                                             //collect from!! no case of new or actDetails but others
@@ -37,7 +37,7 @@ namespace WFAThesisProject
 
         public ServiceProductsWinController(ServiceProducts serviceProd, ProductWindowPurpose actMode, Form prodWin)
         {
-            this.productWindow = prodWin;
+            this.parentProductWindow = prodWin;
             this.typeOfDataManaging = actMode;
             this.serviceProducts = serviceProd;
             catchTheControls();
@@ -45,21 +45,21 @@ namespace WFAThesisProject
 
         private void catchTheControls()
         {
-            txtbName = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxName",true).First();
-            cmbbSubcontr = (MetroFramework.Controls.MetroComboBox) productWindow.Controls.Find("mCmbBxSubcontr", true).First();
-            txtbQuantUn = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxQuantUnit", true).First();
-            txtbDescr = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxDescr", true).First();
-            txtbSaftySh = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxSheet", true).First();
-            txtbDanger = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxDanger", true).First();
+            txtbName = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxName",true).First();
+            cmbbSubcontr = (MetroFramework.Controls.MetroComboBox) parentProductWindow.Controls.Find("mCmbBxSubcontr", true).First();
+            txtbQuantUn = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxQuantUnit", true).First();
+            txtbDescr = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxDescr", true).First();
+            txtbSaftySh = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxSheet", true).First();
+            txtbDanger = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxDanger", true).First();
 
-            txtbStripping = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxStripping", true).First();
-            txtbQuan = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxQuantity", true).First();
-            txtbPlace = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxPlaceing", true).First();
-            txtbBarcode = (MetroFramework.Controls.MetroTextBox) productWindow.Controls.Find("mTxtBxBarcode", true).First();
+            txtbStripping = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxStripping", true).First();
+            txtbQuan = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxQuantity", true).First();
+            txtbPlace = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxPlaceing", true).First();
+            txtbBarcode = (MetroFramework.Controls.MetroTextBox) parentProductWindow.Controls.Find("mTxtBxBarcode", true).First();
 
-            btnOk = (MetroFramework.Controls.MetroTile) productWindow.Controls.Find("mTileOk", true).First();
-            lblInfos = (MetroFramework.Controls.MetroLabel) productWindow.Controls.Find("mLabelInfos", true).First();
-            lblMain = (MetroFramework.Controls.MetroLabel) productWindow.Controls.Find("mLabelMainTitle",true).First();
+            btnOk = (MetroFramework.Controls.MetroTile) parentProductWindow.Controls.Find("mTileOk", true).First();
+            lblInfos = (MetroFramework.Controls.MetroLabel) parentProductWindow.Controls.Find("mLabelInfos", true).First();
+            lblMain = (MetroFramework.Controls.MetroLabel) parentProductWindow.Controls.Find("mLabelMainTitle",true).First();
         }
 
 

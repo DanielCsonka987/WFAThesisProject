@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WFAThesisProject.GeneralExceptions
 {
-    public class ErrorServiceRequGetTheProdPool :Exception
+    public class ErrorServiceGetTheProdPool :Exception
     {
-        public ErrorServiceRequGetTheProdPool(string message) : base(message)
+        public ErrorServiceGetTheProdPool(string message) : base(message)
         {
 
         }

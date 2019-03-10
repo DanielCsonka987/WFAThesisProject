@@ -15,6 +15,12 @@ namespace WFAThesisProject
         private int chosenNewStrippingID_DurringModify;
         private int userIdOfRequester;
         private int oldStrippingID;
+        private int oldProductID;
+        private string oldProductName;
+        private string oldStrippingName;
+        private string oldPlacing;
+        private string oldSubcontr;
+        private int requestID;
 
         private ServiceRequests serviceRequests;
         private MetroFramework.Controls.MetroTile buttonOk;
@@ -30,6 +36,7 @@ namespace WFAThesisProject
         private Control labelOfProduct;
         private Control infoLabel;
         private Control labelPlacing;
+        private MetroFramework.Controls.MetroCheckBox checkBoxNewdProd;
 
         public ServiceRequestsWinController(RequestRecordActive rec, RequestWindowPuropse mode, ServiceRequests servReq,
             Form parentReq)
@@ -87,6 +94,7 @@ namespace WFAThesisProject
             labelPlacing = (MetroFramework.Controls.MetroLabel) requestWindow.Controls.Find("mLabelPlacing", true).First();
             infoLabel = (MetroFramework.Controls.MetroLabel) requestWindow.Controls.Find("mLblInfoTitle", true).First();
             labelOfProduct = (MetroFramework.Controls.MetroLabel)requestWindow.Controls.Find("mLabelOfProductCmb", true).First();
+            checkBoxNewdProd = (MetroFramework.Controls.MetroCheckBox)requestWindow.Controls.Find("mChckBxModifyDiffProd", true).First();
         }
 
         public void errorproviderBuilding()

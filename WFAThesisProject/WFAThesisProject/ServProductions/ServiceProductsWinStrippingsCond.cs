@@ -108,7 +108,7 @@ namespace WFAThesisProject
             txtbQuan.Text = "";
             txtbStripping.Text = "";
 
-            indexProd = prod.productIndex;
+            indexProd = prod.producQualId;
         }
         /// <summary>
         /// fills up the details from record-container to show in fields in case Quantity managing
@@ -129,7 +129,7 @@ namespace WFAThesisProject
             txtbQuan.Text = Convert.ToString(prod.productQuantity);
             txtbStripping.Text = Convert.ToString(prod.productStripping);
 
-            indexProd = prod.productIndex;
+            indexProd = prod.producQualId;
             oldStripping = prod.productStripping.ToString();
             dataActOrHis = prod.productValidity;
             sheetNameTemp = prod.productSheet;

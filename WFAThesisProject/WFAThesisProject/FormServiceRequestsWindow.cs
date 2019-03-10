@@ -87,17 +87,35 @@ namespace WFAThesisProject
         {
             parentMainWin.Visible = true;
         }
-
-        private void mCbBxProducts_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// event of the new product checkbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mChckBxModifyWithDiffProd_CheckedChanged(object sender, EventArgs e)
         {
-            if (requestController != null) //it is needed, comboboxes are adjusted, when contrl declaration is not complite
-                requestController.executeSelectedProductionEvent();
+            if (requestController != null)
+                requestController.executeModfyWithNewProductEvent();
         }
-
+        /// <summary>
+        /// event of the Product combobox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mCbBxProducts_SelectedIndexChanged(object sender, EventArgs e)
+        {        // it is needed, if comboboxes are adjusted, when contrl declaration is not complite
+            if (requestController != null && mChckBxModifyDiffProd.Checked == true)
+                requestController.executeSelectedNewProductionEvent_StrippingSubcontrAreaFilling();
+        }
+        /// <summary>
+        /// event of the Stripping combobox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mCbBxStrippings_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (mCbBxProducts.SelectedIndex != -1 && requestController != null)//it is needed, comboboxes are adjusted, when contrl declaration is not complite
-                requestController.executeSelectedStrippingEvent();
+        {         // it is needed, comboboxes are adjusted, when contrl declaration is not complite
+            if (mCbBxProducts.SelectedIndex != -1 && requestController != null && mChckBxModifyDiffProd.Checked == true)
+                requestController.executeSelectedStrippingEvent_GetTheCorrectStrippingID();
         }
 
         private void mTileExit_Click(object sender, EventArgs e)

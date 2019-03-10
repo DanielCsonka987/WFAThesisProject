@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WFAThesisProject.ProfileManage;
+using WFAThesisProject.Exceptions;
+using WFAThesisProject.ServProfileManage;
 using WFAThesisProject.UserNamePasswordManage;
 
 namespace WFAThesisProject
@@ -157,6 +158,10 @@ namespace WFAThesisProject
             catch (ErrorMigraDocFileCreation e)
             {
                 throw new ErrorServiceProfileMange(e.Message);
+            }
+            catch(ErrorMigraDocFileOpening e)
+            {
+                throw new ErrorServiceProfileManagePDFOpenProb(e.Message);
             }
             catch (Exception e)
             {

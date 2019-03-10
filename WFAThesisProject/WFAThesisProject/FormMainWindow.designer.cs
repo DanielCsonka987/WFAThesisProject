@@ -41,7 +41,7 @@
             this.mTileOrderMan = new MetroFramework.Controls.MetroTile();
             this.mTileUserOwnDetail = new MetroFramework.Controls.MetroTile();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
-            this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
+            this.mPnlLogoArea = new MetroFramework.Controls.MetroPanel();
             this.mTileExit = new MetroFramework.Controls.MetroTile();
             this.mGridMain = new MetroFramework.Controls.MetroGrid();
             this.metroTile1 = new MetroFramework.Controls.MetroTile();
@@ -52,6 +52,8 @@
             this.metroTile5 = new MetroFramework.Controls.MetroTile();
             this.mPanelComm = new MetroFramework.Controls.MetroPanel();
             this.mLabelModeShow = new MetroFramework.Controls.MetroLabel();
+            this.mLblAlternativeCommline = new MetroFramework.Controls.MetroLabel();
+            this.mPnlIntroPicture = new MetroFramework.Controls.MetroPanel();
             this.metroPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mGridMain)).BeginInit();
             this.mPanelComm.SuspendLayout();
@@ -154,9 +156,9 @@
             this.mTileUserOwnDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mTileUserOwnDetail.BackColor = System.Drawing.Color.White;
-            this.mTileUserOwnDetail.Location = new System.Drawing.Point(506, 30);
+            this.mTileUserOwnDetail.Location = new System.Drawing.Point(506, 39);
             this.mTileUserOwnDetail.Name = "mTileUserOwnDetail";
-            this.mTileUserOwnDetail.Size = new System.Drawing.Size(544, 39);
+            this.mTileUserOwnDetail.Size = new System.Drawing.Size(560, 39);
             this.mTileUserOwnDetail.Style = MetroFramework.MetroColorStyle.Red;
             this.mTileUserOwnDetail.TabIndex = 3;
             this.mTileUserOwnDetail.Text = "Felhasználó Neve, Jogosultsági kategóriája, Beosztása (módosításhoz kattintson id" +
@@ -173,7 +175,7 @@
             this.metroPanel2.BackColor = System.Drawing.Color.White;
             this.metroPanel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("metroPanel2.BackgroundImage")));
             this.metroPanel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.metroPanel2.Controls.Add(this.metroPanel3);
+            this.metroPanel2.Controls.Add(this.mPnlLogoArea);
             this.metroPanel2.Controls.Add(this.mTileUsersMan);
             this.metroPanel2.Controls.Add(this.mTileExit);
             this.metroPanel2.Controls.Add(this.mTileSubcontrMan);
@@ -197,19 +199,20 @@
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 10;
             // 
-            // metroPanel3
+            // mPnlLogoArea
             // 
-            this.metroPanel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("metroPanel3.BackgroundImage")));
-            this.metroPanel3.HorizontalScrollbarBarColor = true;
-            this.metroPanel3.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.HorizontalScrollbarSize = 10;
-            this.metroPanel3.Location = new System.Drawing.Point(0, 0);
-            this.metroPanel3.Name = "metroPanel3";
-            this.metroPanel3.Size = new System.Drawing.Size(200, 100);
-            this.metroPanel3.TabIndex = 7;
-            this.metroPanel3.VerticalScrollbarBarColor = true;
-            this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.VerticalScrollbarSize = 10;
+            this.mPnlLogoArea.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mPnlLogoArea.BackgroundImage")));
+            this.mPnlLogoArea.HorizontalScrollbarBarColor = true;
+            this.mPnlLogoArea.HorizontalScrollbarHighlightOnWheel = false;
+            this.mPnlLogoArea.HorizontalScrollbarSize = 10;
+            this.mPnlLogoArea.Location = new System.Drawing.Point(0, 0);
+            this.mPnlLogoArea.Name = "mPnlLogoArea";
+            this.mPnlLogoArea.Size = new System.Drawing.Size(200, 100);
+            this.mPnlLogoArea.TabIndex = 7;
+            this.mPnlLogoArea.VerticalScrollbarBarColor = true;
+            this.mPnlLogoArea.VerticalScrollbarHighlightOnWheel = false;
+            this.mPnlLogoArea.VerticalScrollbarSize = 10;
+            this.mPnlLogoArea.Click += new System.EventHandler(this.mPnlLogoArea_Click);
             // 
             // mTileExit
             // 
@@ -257,6 +260,7 @@
             this.mGridMain.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.mGridMain.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.mGridMain.Location = new System.Drawing.Point(235, 150);
+            this.mGridMain.MultiSelect = false;
             this.mGridMain.Name = "mGridMain";
             this.mGridMain.ReadOnly = true;
             this.mGridMain.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -270,7 +274,7 @@
             this.mGridMain.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.mGridMain.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.mGridMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.mGridMain.Size = new System.Drawing.Size(815, 455);
+            this.mGridMain.Size = new System.Drawing.Size(831, 455);
             this.mGridMain.Style = MetroFramework.MetroColorStyle.Lime;
             this.mGridMain.TabIndex = 7;
             // 
@@ -316,15 +320,16 @@
             // metroTile6
             // 
             this.metroTile6.ActiveControl = null;
-            this.metroTile6.Location = new System.Drawing.Point(683, 3);
+            this.metroTile6.Location = new System.Drawing.Point(920, 100);
             this.metroTile6.Name = "metroTile6";
-            this.metroTile6.Size = new System.Drawing.Size(130, 40);
+            this.metroTile6.Size = new System.Drawing.Size(146, 40);
             this.metroTile6.Style = MetroFramework.MetroColorStyle.Lime;
             this.metroTile6.TabIndex = 8;
             this.metroTile6.Text = "Nézetváltás";
             this.metroTile6.TileTextFontSize = MetroFramework.MetroTileTextSize.Small;
             this.metroTile6.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
             this.metroTile6.UseSelectable = true;
+            this.metroTile6.Visible = false;
             // 
             // metroTile4
             // 
@@ -355,7 +360,6 @@
             // mPanelComm
             // 
             this.mPanelComm.Controls.Add(this.metroTile5);
-            this.mPanelComm.Controls.Add(this.metroTile6);
             this.mPanelComm.Controls.Add(this.metroTile1);
             this.mPanelComm.Controls.Add(this.metroTile4);
             this.mPanelComm.Controls.Add(this.metroTile2);
@@ -365,7 +369,7 @@
             this.mPanelComm.HorizontalScrollbarSize = 10;
             this.mPanelComm.Location = new System.Drawing.Point(231, 97);
             this.mPanelComm.Name = "mPanelComm";
-            this.mPanelComm.Size = new System.Drawing.Size(819, 47);
+            this.mPanelComm.Size = new System.Drawing.Size(681, 47);
             this.mPanelComm.TabIndex = 9;
             this.mPanelComm.VerticalScrollbarBarColor = true;
             this.mPanelComm.VerticalScrollbarHighlightOnWheel = false;
@@ -377,11 +381,42 @@
             this.mLabelModeShow.AutoSize = true;
             this.mLabelModeShow.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.mLabelModeShow.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.mLabelModeShow.Location = new System.Drawing.Point(231, 30);
+            this.mLabelModeShow.Location = new System.Drawing.Point(231, 39);
             this.mLabelModeShow.Name = "mLabelModeShow";
             this.mLabelModeShow.Size = new System.Drawing.Size(106, 25);
             this.mLabelModeShow.TabIndex = 10;
             this.mLabelModeShow.Text = "Üdvözöljük!";
+            // 
+            // mLblAlternativeCommline
+            // 
+            this.mLblAlternativeCommline.AutoSize = true;
+            this.mLblAlternativeCommline.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.mLblAlternativeCommline.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.mLblAlternativeCommline.Location = new System.Drawing.Point(231, 110);
+            this.mLblAlternativeCommline.Name = "mLblAlternativeCommline";
+            this.mLblAlternativeCommline.Size = new System.Drawing.Size(509, 25);
+            this.mLblAlternativeCommline.TabIndex = 11;
+            this.mLblAlternativeCommline.Text = "A táblázatban duplakattintással éri el a rekordok tulajdonságait";
+            this.mLblAlternativeCommline.Visible = false;
+            // 
+            // mPnlIntroPicture
+            // 
+            this.mPnlIntroPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mPnlIntroPicture.BackgroundImage = global::WFAThesisProject.Properties.Resources.lab_overview;
+            this.mPnlIntroPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.mPnlIntroPicture.HorizontalScrollbarBarColor = true;
+            this.mPnlIntroPicture.HorizontalScrollbarHighlightOnWheel = false;
+            this.mPnlIntroPicture.HorizontalScrollbarSize = 10;
+            this.mPnlIntroPicture.Location = new System.Drawing.Point(231, 150);
+            this.mPnlIntroPicture.Name = "mPnlIntroPicture";
+            this.mPnlIntroPicture.Size = new System.Drawing.Size(772, 455);
+            this.mPnlIntroPicture.TabIndex = 12;
+            this.mPnlIntroPicture.VerticalScrollbarBarColor = true;
+            this.mPnlIntroPicture.VerticalScrollbarHighlightOnWheel = false;
+            this.mPnlIntroPicture.VerticalScrollbarSize = 10;
+            this.mPnlIntroPicture.Visible = false;
             // 
             // FormMainWindow
             // 
@@ -392,10 +427,13 @@
             this.BackImage = ((System.Drawing.Image)(resources.GetObject("$this.BackImage")));
             this.BackLocation = MetroFramework.Forms.BackLocation.TopRight;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(1073, 631);
+            this.ClientSize = new System.Drawing.Size(1089, 631);
+            this.Controls.Add(this.mPnlIntroPicture);
+            this.Controls.Add(this.mLblAlternativeCommline);
             this.Controls.Add(this.mLabelModeShow);
             this.Controls.Add(this.mPanelComm);
             this.Controls.Add(this.mGridMain);
+            this.Controls.Add(this.metroTile6);
             this.Controls.Add(this.metroPanel2);
             this.Controls.Add(this.mTileUserOwnDetail);
             this.DisplayHeader = false;
@@ -427,7 +465,7 @@
         private MetroFramework.Controls.MetroTile mTileUserOwnDetail;
         private MetroFramework.Controls.MetroPanel metroPanel2;
         private MetroFramework.Controls.MetroTile mTileExit;
-        private MetroFramework.Controls.MetroPanel metroPanel3;
+        private MetroFramework.Controls.MetroPanel mPnlLogoArea;
         private MetroFramework.Controls.MetroGrid mGridMain;
         private MetroFramework.Controls.MetroTile metroTile1;
         private MetroFramework.Controls.MetroTile metroTile2;
@@ -437,6 +475,8 @@
         private MetroFramework.Controls.MetroTile metroTile5;
         private MetroFramework.Controls.MetroPanel mPanelComm;
         private MetroFramework.Controls.MetroLabel mLabelModeShow;
+        private MetroFramework.Controls.MetroLabel mLblAlternativeCommline;
+        private MetroFramework.Controls.MetroPanel mPnlIntroPicture;
     }
 }
 

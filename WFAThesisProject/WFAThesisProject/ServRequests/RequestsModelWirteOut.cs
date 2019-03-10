@@ -24,30 +24,27 @@ namespace WFAThesisProject
         //tested
         #region delets an active record -> makes it givenOut one
         private string queryGiveOutTheRequest =
-            "UPDATE keresek SET keres_teljesit=CURDATE(), keres_modosit=@modUserId, keres_erveny=0" +
-            " WHERE keres_datum = @reqStartDate AND termek_quant_id = @kiszerelId AND" +
-            " user_id = @reqUserId AND keres_teljesit=0";
+            "UPDATE keresek SET keres_teljesit=CURDATE(), keres_modosit=@modUserId, keres_erveny=2" +
+            " WHERE keres_id = @requId AND user_id = @reqUserId AND keres_erveny=1 AND keres_teljesit=0";
         /// <summary>
         /// process of inactivete a request and charge the inventroy pool in the specific stripping
         /// </summary>
         /// <param name="modUserId">userID who makes the process</param>
-        /// <param name="reqStartDate">startDate of the target request</param>
+        /// <param name="requId">startDate of the target request</param>
         /// <param name="recQuantId">stripping ID of the target request</param>
         /// <param name="reqUserId">user ID, who asked and credits for</param>
         /// <param name="newAmountInStripp">teh amount that will be in the strore after the process - less</param>
-        public void deleteRequestTableGiveOutARecord(string modUserId, string reqStartDate, string recQuantId, 
-            string reqUserId, string newAmountInStripp)
+        public void deleteRequestTableGiveOutARecord(string modUserId, string reqId, string recQuantId, string reqUserId, 
+            string newAmountInStripp)
         {
             try
             {
                 KeyValuePair<string, string> modUser = new KeyValuePair<string, string>("@modUserId", modUserId);
-                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@reqStartDate", reqStartDate);
-                KeyValuePair<string, string> quantId = new KeyValuePair<string, string>("@kiszerelId", recQuantId);
+                KeyValuePair<string, string> reqIdentif = new KeyValuePair<string, string>("@requId", reqId);
                 KeyValuePair<string, string> reqUser = new KeyValuePair<string, string>("@reqUserId", reqUserId);
                 parameters = new List<KeyValuePair<string, string>>();
                 parameters.Add(modUser);
-                parameters.Add(reqStart);
-                parameters.Add(quantId);
+                parameters.Add(reqIdentif);
                 parameters.Add(reqUser);
             }
             catch (Exception e)
@@ -56,7 +53,7 @@ namespace WFAThesisProject
                     e.Message);
             }
             mdi.openConnection();
-            mdi.execPrepDMQueryWithKVPList(queryGiveOutTheRequest, parameters, 4);  //delete
+            mdi.execPrepDMQueryWithKVPList(queryGiveOutTheRequest, parameters, 3);  //delete
             try
             {
                 KeyValuePair<string, string> newAmount = new KeyValuePair<string, string>("@ujabbMennyiseg", newAmountInStripp);
@@ -79,28 +76,27 @@ namespace WFAThesisProject
         #region renew a given out record -> makes it taken back, active request
         private string queryUndeleteGivenOutRequest =
             "UPDATE keresek SET keres_teljesit=0, keres_modosit=@modUserId, keres_erveny=1" +
-            " WHERE keres_datum = @reqStartDate AND termek_quant_id = @kiszerelId AND" +
-            " user_id = @reqUserId AND keres_teljesit>0";
+            " WHERE keres_id = @requId AND user_id = @reqUserId AND keres_teljesit>0 AND keres_erveny=2";
         /// <summary>
         /// process of reverse a giving out event - it makes the credit inventroy by the specific stripping
         /// </summary>
         /// <param name="modUserId">uesrId, who mkes the process</param>
-        /// <param name="reqStartDate">startDate of the request to specify</param>
+        /// <param name="requId">startDate of the request to specify</param>
         /// <param name="recQuantId">stripping ID, what is needed to modify</param>
         /// <param name="reqUserId">user ID, who give back the product</param>
         /// <param name="newAmountInStripp">the amount that will bi in the store, after the process</param>
-        public void undeleteRequestTableGetBackARecord(string modUserId, string reqStartDate, string recQuantId,
+        public void undeleteRequestTableGetBackARecord(string modUserId, string requId, string recQuantId,
                 string reqUserId, string newAmountInStripp)
         {
             try
             {
                 KeyValuePair<string, string> modUser = new KeyValuePair<string, string>("@modUserId", modUserId);
-                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@reqStartDate", reqStartDate);
+                KeyValuePair<string, string> reqIdentif = new KeyValuePair<string, string>("@requId", requId);
                 KeyValuePair<string, string> quantId = new KeyValuePair<string, string>("@kiszerelId", recQuantId);
                 KeyValuePair<string, string> reqUser = new KeyValuePair<string, string>("@reqUserId", reqUserId);
                 parameters = new List<KeyValuePair<string, string>>();
                 parameters.Add(modUser);
-                parameters.Add(reqStart);
+                parameters.Add(reqIdentif);
                 parameters.Add(quantId);
                 parameters.Add(reqUser);
             }
@@ -132,29 +128,26 @@ namespace WFAThesisProject
         //tested
         #region delet an active record - no effect on inventory, no need for that
         private string queryDirectDeletTheRequest =
-            "UPDATE keresek SET keres_modosit=@modUserId, keres_erveny=0" +
-            " WHERE keres_datum=@reqStartDate AND termek_quant_id=@kiszerelId AND user_id=@reqUserId AND" +
-            " keres_teljesit=0";
+            "UPDATE keresek SET keres_modosit=@modUserId, keres_erveny=3" +
+            " WHERE keres_id = @requId AND user_id=@reqUserId AND" +
+            " keres_teljesit=0 AND keres_erveny = 1";
         /// <summary>
         /// delet an active request by the stock-keeper - no inventroy change
         /// </summary>
         /// <param name="modUserId">userID of the authorised stockkeeper</param>
-        /// <param name="reqStartDate">startDate of the target request</param>
+        /// <param name="requId">DB identifier of the target request</param>
         /// <param name="recQuantId">strippingID of the target</param>
         /// <param name="reqUserId">userID, who wanted</param>
-        public void deleteRequestTableActiveRecord(string modUserId, string reqStartDate, string recQuantId,
-            string reqUserId)
+        public void deleteRequestTableActiveRecord(string modUserId, string requId, string reqUserId)
         {
             try
             {
                 KeyValuePair<string, string> modUser = new KeyValuePair<string, string>("@modUserId", modUserId);
-                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@reqStartDate", reqStartDate);
-                KeyValuePair<string, string> quantId = new KeyValuePair<string, string>("@kiszerelId", recQuantId);
+                KeyValuePair<string, string> reqIdetify = new KeyValuePair<string, string>("@requId", requId);
                 KeyValuePair<string, string> reqUser = new KeyValuePair<string, string>("@reqUserId", reqUserId);
                 parameters = new List<KeyValuePair<string, string>>();
                 parameters.Add(modUser);
-                parameters.Add(reqStart);
-                parameters.Add(quantId);
+                parameters.Add(reqIdetify);
                 parameters.Add(reqUser);
             }
             catch (Exception e)
@@ -163,36 +156,31 @@ namespace WFAThesisProject
                     e.Message);
             }
             mdi.openConnection();
-            mdi.execPrepDMQueryWithKVPList(queryDirectDeletTheRequest, parameters, 4);
+            mdi.execPrepDMQueryWithKVPList(queryDirectDeletTheRequest, parameters, 3);
             mdi.closeConnection();
         }
         #endregion
         //tested
         #region undelet a direct deleted request record - active again
         private string queryUndeletDirectDeleteRequest =
-            "UPDATE keresek SET keres_teljesit=0, keres_modosit=@modUserId, keres_erveny=1" +
-            " WHERE keres_datum=@reqStartDate AND termek_quant_id=@kiszerelId AND user_id=@reqUserId AND" +
-            " keres_teljesit=0";
+            "UPDATE keresek SET keres_modosit=@modUserId, keres_erveny=1" +
+            " WHERE keres_id =@requId AND user_id=@reqUserId AND keres_teljesit=0 AND keres_erveny = 3";
         /// <summary>
         /// renew the deleted request record, no inventory change, active again
         /// </summary>
         /// <param name="modUserId">userID of the authorised stock-keeper</param>
-        /// <param name="reqStartDate">startDate of the target reqzest</param>
-        /// <param name="recQuantId">strippingID of the target</param>
+        /// <param name="requId">startDate of the target reqzest</param>
         /// <param name="reqUserId">userID, who wanted that</param>
-        public void undeletRequestTableDeletedRecord(string modUserId, string reqStartDate, string recQuantId,
-            string reqUserId)
+        public void undeletRequestTableDeletedRecord(string modUserId, string requId, string reqUserId)
         {
             try
             {
                 KeyValuePair<string, string> modUser = new KeyValuePair<string, string>("@modUserId", modUserId);
-                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@reqStartDate", reqStartDate);
-                KeyValuePair<string, string> quantId = new KeyValuePair<string, string>("@kiszerelId", recQuantId);
+                KeyValuePair<string, string> requIdentif = new KeyValuePair<string, string>("@requId", requId);
                 KeyValuePair<string, string> reqUser = new KeyValuePair<string, string>("@reqUserId", reqUserId);
                 parameters = new List<KeyValuePair<string, string>>();
                 parameters.Add(modUser);
-                parameters.Add(reqStart);
-                parameters.Add(quantId);
+                parameters.Add(requIdentif);
                 parameters.Add(reqUser);
             }
             catch (Exception e)
@@ -201,7 +189,7 @@ namespace WFAThesisProject
                     e.Message);
             }
             mdi.openConnection();
-            mdi.execPrepDMQueryWithKVPList(queryUndeletDirectDeleteRequest, parameters, 4);
+            mdi.execPrepDMQueryWithKVPList(queryUndeletDirectDeleteRequest, parameters, 3);
             mdi.closeConnection();
         }
         #endregion
@@ -210,27 +198,26 @@ namespace WFAThesisProject
         private string queryUpdateContentTheRequest = //the new paramteres can be the strippin-product itself and amount
                                                       // -> a new product choose area is needed => to feed those comboboxes in ReadIn class has methods
                                                       // -> it renew the requesting start date, the requesting doesn't change!
-            "UPDATE keresek SET keres_datum=CURDATE(), keres_modosit=@modUserId, keres_erveny=1," +
-            " termek_quant_id=@ujKiszerelId, keres_mennyiseg=@ujMennyis" +
-            " WHERE keres_datum=@reqStartDate AND termek_quant_id=@regiKiszerelId AND user_id=@reqUserId";
+            "UPDATE keresek SET keres_datum=CURDATE(), keres_modosit=@modUserId, termek_quant_id=@ujKiszerelId," +
+            " keres_mennyiseg=@ujMennyis" +
+            " WHERE keres_id = @requId AND user_id=@reqUserId AND keres_erveny=1";
         /// <summary>
         /// changes an active record, that may not correct
         /// -> strippingId, amount direct change, startDate changes to the present moment
         /// </summary>
         /// <param name="modUserId">userID, who changes it</param>
         /// <param name="newRecordAmount">the new amount</param>
+        /// <param name="newPlace">the new placing area</param>
         /// <param name="newRecordQuantId">the new stripping ID</param>
-        /// <param name="oldReqStartDate">the old startData</param>
-        /// <param name="oldRecQuantId">the old strippingID</param>
+        /// <param name="requId">the old startData</param>
         /// <param name="oldReqUserId">the userID, who eanted that</param>
-        public void updateRequestTableAtARecord(string modUserId, string newRecordAmount, string newRecordQuantId,
-            string oldReqStartDate, string oldRecQuantId, string oldReqUserId)
+        public void updateRequestTableAtARecord(string modUserId, string newRecordAmount,
+            string newRecordQuantId, string requId, string oldReqUserId)
         {
             try
             {
                 KeyValuePair<string, string> modUser = new KeyValuePair<string, string>("@modUserId", modUserId);
-                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@reqStartDate", oldReqStartDate);
-                KeyValuePair<string, string> quantId = new KeyValuePair<string, string>("@regiKiszerelId", oldRecQuantId);
+                KeyValuePair<string, string> reqStart = new KeyValuePair<string, string>("@requId", requId);
                 KeyValuePair<string, string> reqUser = new KeyValuePair<string, string>("@reqUserId", oldReqUserId);
 
                 KeyValuePair<string, string> newQuantId = new KeyValuePair<string, string>("@ujKiszerelId", newRecordQuantId);
@@ -238,7 +225,6 @@ namespace WFAThesisProject
                 parameters = new List<KeyValuePair<string, string>>();
                 parameters.Add(modUser);
                 parameters.Add(reqStart);
-                parameters.Add(quantId);
                 parameters.Add(reqUser);
                 parameters.Add(newQuantId);
                 parameters.Add(newAmount);
@@ -249,7 +235,7 @@ namespace WFAThesisProject
                     e.Message);
             }
             mdi.openConnection();
-            mdi.execPrepDMQueryWithKVPList(queryUpdateContentTheRequest, parameters, 6);
+            mdi.execPrepDMQueryWithKVPList(queryUpdateContentTheRequest, parameters, 5);
             mdi.closeConnection();
         }
         #endregion

@@ -34,7 +34,9 @@ namespace WFAThesisProject
             else if (purposeOfTheWindow == RequestWindowPuropse.MorifyTheActive)
             {
                 adjustModfyCase();
-                fillUpTheProductsField();
+                checkBoxNewdProd.Visible = true;
+                comboBoxProducts.Enabled = false;
+                comboBoxStrippings.Enabled = false;
                 buttonOk.Visible = true;
                 buttonOk.Text = "Módosítás";
             }
@@ -68,32 +70,45 @@ namespace WFAThesisProject
                 infoLabel.Text += "Legutóbb módosította: " + rec.keresModosNev;
             }
             userIdOfRequester = rec.userId;     //all change case needs that
+            requestID = rec.keresId;
+
             oldStrippingID = rec.termekQuantId;    //for the case of the modifing the record content
+            oldProductID = rec.termekId;
+            oldProductName = rec.termekNev;
+            oldStrippingName = rec.termekKiszerel.ToString();
+            oldPlacing = rec.termekHely;
+            oldSubcontr = rec.termekBeszall;
+            chosenNewStrippingID_DurringModify = oldStrippingID;
         }
+        
         /// <summary>
-        /// in need it fill up the combobox of stripping
+        /// if user want the old product durring modify active
         /// </summary>
-        private void fillUpTheStrippingsField(int chosenProductionID_DurringModify)
+        private void adjustAreasToChooseNewProd()
         {
-            List<string> itemnames = serviceRequests.getThePoolOfStrippings(chosenProductionID_DurringModify);
-            comboBoxStrippings.Items.Clear();
-            foreach (string s in itemnames)
-                comboBoxStrippings.Items.Add(s);
-        }
-
-        /// <summary>
-        /// in need, it fills up the combobox of productions
-        /// </summary>
-        private void fillUpTheProductsField()
-        {
-            List<string> itemnames = serviceRequests.getThePoolOfProducts();
-            labelOfProduct.Text += "Válassszon a " + comboBoxProducts.Text + " helyett!";
+            comboBoxProducts.Enabled = true;
+            comboBoxStrippings.Enabled = true;
             comboBoxProducts.Items.Clear();
-            foreach (string s in itemnames)
-                comboBoxProducts.Items.Add(s);
-
-
+            comboBoxStrippings.Items.Clear();
+            labelOfProduct.Text += "Válassszon a " + oldProductName + " " + oldSubcontr + " helyett!";
         }
+        /// <summary>
+        /// fill back the details of the product, if user dont want a new product
+        /// </summary>
+        private void adjustBackTheOldProductParam()
+        {
+            comboBoxProducts.Items.Clear();
+            comboBoxStrippings.Items.Clear();
+            comboBoxProducts.Items.Add(oldProductName);
+            comboBoxProducts.SelectedIndex = 0;
+            comboBoxStrippings.Items.Add(oldStrippingName);
+            comboBoxStrippings.SelectedIndex = 0;
+            comboBoxProducts.Enabled = false;
+            comboBoxStrippings.Enabled = false;
+            labelOfProduct.Text = "";
+            chosenNewStrippingID_DurringModify = oldStrippingID;
+        }
+
 
         #endregion
 
@@ -118,6 +133,7 @@ namespace WFAThesisProject
                 buttonOk.Text = "Visszavétel";
             }
         }
+
         /// <summary>
         /// fills up the text of GivenOut records to the fields
         /// </summary>
@@ -142,6 +158,7 @@ namespace WFAThesisProject
                 infoLabel.Text += "Kiadta: " + rec.keresModosNev;
             }
 
+            requestID = rec.keresId;
             userIdOfRequester = rec.userId;
             oldStrippingID = rec.termekQuantId;
         }
@@ -187,6 +204,7 @@ namespace WFAThesisProject
             infoLabel.Text = "Törölt kérés\n";
             infoLabel.Text += "Legutóbb módosította: " + rec.keresModosNev;
 
+            requestID = rec.keresId;
             userIdOfRequester = rec.userId;
             oldStrippingID = rec.termekQuantId;
         }
@@ -200,7 +218,8 @@ namespace WFAThesisProject
         private void adjustCancelledRecFields(RequestRecordCalledOff rec)
         {
             fillUpCancelledFields(rec);
-
+            adjustReadOnlyCase();
+            buttonOk.Visible = false;
         }
         /// <summary>
         /// fills up the content of the cancelled rccord
@@ -212,11 +231,16 @@ namespace WFAThesisProject
             textBoxArea.Text = rec.userTerulet;
             textBoxStartDate.Text = rec.keresDatum;
             textBoxAmount.Text = Convert.ToString(rec.keresMennyiseg);
-            comboBoxProducts.Text = rec.termekNev;
+            comboBoxProducts.Items.Add(rec.termekNev);
+            comboBoxProducts.SelectedIndex = 0;
+            comboBoxStrippings.Items.Add(rec.termekKiszerel);
+            comboBoxStrippings.SelectedIndex = 0;
             textBoxPlacing.Visible = false;
             labelPlacing.Visible = false;
             textBoxSubcontr.Text = rec.termekBeszall;
             infoLabel.Text = "Lemondott kérés";
+
+            requestID = rec.keresId;
         }
         #endregion
 
@@ -234,6 +258,7 @@ namespace WFAThesisProject
             comboBoxProducts.Enabled = false;
             comboBoxStrippings.Enabled = false;
             textBoxPlacing.ReadOnly = true;
+            textBoxSubcontr.ReadOnly = true;
         }
         /// <summary>
         /// defines which fields are needed for the user - case only modify

@@ -24,7 +24,6 @@ namespace WFAThesisProject
             {
                 loadInGridToShowProperContent();
             };
-            adjustOpeningWindow();
             //Point startOfServicesTile = new Point(230, 55);
             Point mainButtonStartPoint = new Point(23, 150);
             if (setOfUserRights.getuR7_ProductsMan() != RightLevels.NONE)
@@ -41,7 +40,7 @@ namespace WFAThesisProject
                 contrTileRequests.Location = mainButtonStartPoint;
                 contrTileRequests.Visible = true;
                 mainButtonStartPoint.Y += 60;
-                initRequestSercBasicEvents(setOfUserRights.getuR8_ReqMan(), contrTileRequests);     //defines the rquire service basic
+                initRequestServBasicEvents(setOfUserRights.getuR8_ReqMan(), contrTileRequests);     //defines the requires service basic
             }
             if (setOfUserRights.getuR9_Order() != RightLevels.NONE)
             {
@@ -49,22 +48,23 @@ namespace WFAThesisProject
                 contrTileOrdering.Location = mainButtonStartPoint;
                 contrTileOrdering.Visible = true;
                 mainButtonStartPoint.Y += 60;
+                initOrderingServBasicEvents(setOfUserRights.getuR9_Order(), contrTileOrdering);     //defines the ordering service basics
             }
-            if (setOfUserRights.getuR10_Subcontr() != RightLevels.NONE)
+            if (setOfUserRights.getuR10_Subcontr() != RightLevels.NONE)         //not implemented
             {
                 Control contrTileSubcontr = mainWindow.Controls.Find("mTileSubcontrMan", true).First();
                 contrTileSubcontr.Location = mainButtonStartPoint;
                 contrTileSubcontr.Visible = true;
                 mainButtonStartPoint.Y += 60;
             }
-            if (setOfUserRights.getuR4_UserGlobal() != RightLevels.NONE)
+            if (setOfUserRights.getuR4_UserGlobal() != RightLevels.NONE)        //not implemented
             {
                 Control contrTileUserGlobal = mainWindow.Controls.Find("mTileUsersMan", true).First();
                 contrTileUserGlobal.Location = mainButtonStartPoint;
                 contrTileUserGlobal.Visible = true;
                 mainButtonStartPoint.Y += 60;
             }
-            if (setOfUserRights.getuR5_RightMan() != RightLevels.NONE)
+            if (setOfUserRights.getuR5_RightMan() != RightLevels.NONE)          //another window opens immediately
             {
                 Control contrTileRightsMan = mainWindow.Controls.Find("mTileRightsMan", true).First();
                 contrTileRightsMan.Location = mainButtonStartPoint;
@@ -72,7 +72,7 @@ namespace WFAThesisProject
                 mainButtonStartPoint.Y += 60;
                 initRightsManagingSerevice(setOfUserRights.getuR5_RightMan(), contrTileRightsMan);
             }
-            if (setOfUserRights.getuR6_AccidGlobal() != RightLevels.NONE)
+            if (setOfUserRights.getuR6_AccidGlobal() != RightLevels.NONE)       //not implemented
             {
                 Control contrTileAccidents = mainWindow.Controls.Find("mTileAccidentMan", true).First();
                 contrTileAccidents.Location = mainButtonStartPoint;
@@ -86,11 +86,6 @@ namespace WFAThesisProject
                 mainWindow.Close();
             };
             contrExit.Visible = true;
-        }
-
-        private void adjustOpeningWindow()
-        {
-            
         }
 
         /// <summary>

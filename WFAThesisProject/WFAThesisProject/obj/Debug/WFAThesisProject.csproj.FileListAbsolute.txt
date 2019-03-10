@@ -64,3 +64,5 @@ C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProj
 C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProject\obj\Debug\WFAThesisProject.FormServiceRequestsWindow.resources
 C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProject\obj\Debug\WFAThesisProject.FormServiceProfileWindow.resources
 C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProject\obj\Debug\WFAThesisProject.FormAdjustConnectionWindow.resources
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProject\obj\Debug\WFAThesisProject.FormServiceOrderingWindow.resources
+C:\Users\AdminDaniel\source\repos\ThesisChemStore\WFAThesisProject\WFAThesisProject\obj\Debug\WFAThesisProject.FormServiceOrdBookArriveWin.resources

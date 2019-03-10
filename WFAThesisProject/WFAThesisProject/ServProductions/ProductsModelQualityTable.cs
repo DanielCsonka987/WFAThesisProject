@@ -71,7 +71,7 @@ namespace WFAThesisProject
             try
             {
                 parameters = new List<KeyValuePair<string, string>>();
-                KeyValuePair<string, string> id = new KeyValuePair<string, string>("@termekId", modif.productIndex.ToString());
+                KeyValuePair<string, string> id = new KeyValuePair<string, string>("@termekId", modif.productQualId.ToString());
                 KeyValuePair<string, string> name = new KeyValuePair<string, string>("@nev", modif.productName);
                 KeyValuePair<string, string> subcon = new KeyValuePair<string, string>("@beszallito", modif.productSubcontr);
                 KeyValuePair<string, string> descr = new KeyValuePair<string, string>("@leiras", modif.productDescr);

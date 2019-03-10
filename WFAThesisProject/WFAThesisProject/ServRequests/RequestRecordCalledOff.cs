@@ -8,6 +8,7 @@ namespace WFAThesisProject.ServRequests
 {
     public class RequestRecordCalledOff   //case of Called off and active
     {
+        public int keresId { get; set; }
         public string keresDatum { get; set; }
         public int termekId { get; set; }
         public string termekNev { get; set; }

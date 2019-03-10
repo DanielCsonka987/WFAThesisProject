@@ -17,8 +17,8 @@ namespace WFAThesisProject
         private RequestsModelWirteOut modelRequestWrite;
         private UserConnDetails dbci;
         private DataTable table;
-        private Form parent;
-        private string userIdOfPoerator;
+        private Form parentMain;
+        private string userIdOfOperator;
         private List<RequestRecordActive> requestNormal;
         private List<RequestRecordDeleted> requestDeleted;
         private List<RequestRecordCalledOff> requestCalledOff;
@@ -26,11 +26,11 @@ namespace WFAThesisProject
         private List<ProductToChoose> productListForUserChoose;
         private List<StrippingToChoose> strippingListForUserChoose;
 
-        public ServiceRequests(UserConnDetails dbci, Form parentMain, string userIdOfPoerator)
+        public ServiceRequests(UserConnDetails dbci, Form parentMainWin, string userIdOfPoerator)
         {
             this.dbci = dbci;
-            this.parent = parentMain;
-            this.userIdOfPoerator = userIdOfPoerator;
+            this.parentMain = parentMainWin;
+            this.userIdOfOperator = userIdOfPoerator;
         }
 
         #region ActiveRequests - readIn
@@ -40,8 +40,9 @@ namespace WFAThesisProject
         /// <returns>DataTAble of ActiveResuests</returns>
         public DataTable createDataTableNormalRequests()
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             table = new DataTable();
+            table.Columns.Add("Srsz.", typeof(int));
             table.Columns.Add("Kérő neve", typeof(string));
             table.Columns.Add("Kérő területe", typeof(string));
             table.Columns.Add("Kérés dátuma", typeof(string));
@@ -57,7 +58,7 @@ namespace WFAThesisProject
                 requestNormal = modelRequestRead.getActiveRequests();
                 foreach (RequestRecordActive r in requestNormal)
                 {
-                    table.Rows.Add(r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.termekKiszerel, 
+                    table.Rows.Add(r.keresId, r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.termekKiszerel, 
                         r.termekKiszerelEgys, r.keresMennyiseg, r.termekHely, r.termekBeszall);
                 }
                 return table;
@@ -73,12 +74,24 @@ namespace WFAThesisProject
             }
         }
         /// <summary>
-        /// gets the list of ActiveRequests
+        /// gets the element form list of ActiveRequests
         /// </summary>
-        /// <returns></returns>
-        public RequestRecordActive getChosenActiveRequest(int index)
+        /// <returns>ActiveRequest container</returns>
+        public RequestRecordActive getChosenActiveRequest(int requId)
         {
-            return requestNormal[index];
+            try
+            {
+                foreach (RequestRecordActive rec in requestNormal)
+                {
+                    if (rec.keresId == requId)
+                        return rec;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new ErrorServiceRequests("A listaelem keresésnél hiba történt (ServRequ_DTAct) "+ e.Message);
+            }
+            throw new ErrorServiceRequests("Az aktív kérések közötti keresés eredménytelen volt (ServRequ_DTAct)");
         }
         #endregion
 
@@ -89,14 +102,16 @@ namespace WFAThesisProject
         /// <returns>DataTable of deleted resuest</returns>
         public DataTable createDataTableDeletedRequests()
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             table = new DataTable();
+            table.Columns.Add("Srsz.", typeof(int));
             table.Columns.Add("Kérő neve", typeof(string));
             table.Columns.Add("Kérő területe", typeof(string));
             table.Columns.Add("Kérés dátuma", typeof(string));
             table.Columns.Add("Termék neve", typeof(string));
             table.Columns.Add("Mennyiség", typeof(int));
             table.Columns.Add("Termék kiszerelése", typeof(int));
+            table.Columns.Add("Beszállító", typeof(string));
             table.Columns.Add("Törlő neve", typeof(string));
 
             try
@@ -104,8 +119,8 @@ namespace WFAThesisProject
                 requestDeleted = modelRequestRead.getDeletedRequests();
                 foreach (RequestRecordDeleted r in requestDeleted)
                 {
-                    table.Rows.Add(r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.keresMennyiseg,
-                        r.termekKiszerel, r.keresModosNev);
+                    table.Rows.Add(r.keresId, r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.keresMennyiseg,
+                        r.termekKiszerel, r.termekBeszall, r.keresModosNev);
                 }
             }
             catch (ErrorServiceCreateDataList e)
@@ -118,13 +133,26 @@ namespace WFAThesisProject
             }
             return table;
         }
+
         /// <summary>
         /// gets the list of DeletedRequests
         /// </summary>
-        /// <returns>List of DeletedRequests</returns>
-        public RequestRecordDeleted getChosenDeletedRequest(int index)
+        /// <returns>seeked DeletedRequest container</returns>
+        public RequestRecordDeleted getChosenDeletedRequest(int requId)
         {
-            return requestDeleted[index];
+            try
+            {
+                foreach (RequestRecordDeleted rec in requestDeleted)
+                {
+                    if (rec.keresId == requId)
+                        return rec;
+                }
+                throw new ErrorServiceRequests("A listaelem keresése sikertelen (ServRequ_DTDel)");
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceRequests("A listaelem keresése sikertelen (ServRequ_DTDel)");
+            }
         }
         #endregion
 
@@ -135,21 +163,23 @@ namespace WFAThesisProject
         /// <returns>DataTAble of CalledOut requests</returns>
         public DataTable createDataTableCalledOffRequests()
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             table = new DataTable();
+            table.Columns.Add("Srsz.", typeof(int));
             table.Columns.Add("Kérő neve", typeof(string));     //összevonva
             table.Columns.Add("Kérő területe", typeof(string));
             table.Columns.Add("Kérés dátuma", typeof(string));
             table.Columns.Add("Termék neve", typeof(string));
             table.Columns.Add("Mennyiség", typeof(int));
+            table.Columns.Add("Beszállító", typeof(string));
             table.Columns.Add("Termék kiszerelése", typeof(int));
             try
             {
                 requestCalledOff = modelRequestRead.getCalledOffRequests();
                 foreach (RequestRecordCalledOff r in requestCalledOff)
                 {
-                    table.Rows.Add(r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.keresMennyiseg,
-                        r.termekKiszerel);
+                    table.Rows.Add(r.keresId, r.userKeroNev, r.userTerulet, r.keresDatum, r.termekNev, r.keresMennyiseg,
+                        r.termekBeszall, r.termekKiszerel);
                 }
             }
             catch (ErrorServiceCreateDataList e)
@@ -163,12 +193,24 @@ namespace WFAThesisProject
             return table;
         }
         /// <summary>
-        /// gets the CalledOff requests
+        /// gets the element from CalledOff requests
         /// </summary>
-        /// <returns>list of CalledOut requests</returns>
-        public RequestRecordCalledOff getChosenCalledOffRequest(int index)
+        /// <returns>CalledOut request container</returns>
+        public RequestRecordCalledOff getChosenCalledOffRequest(int requId)
         {
-            return requestCalledOff[index];
+            try
+            {
+                foreach (RequestRecordCalledOff rec in requestCalledOff)
+                {
+                    if (rec.keresId == requId)
+                        return rec;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceRequests("A listaelem keresésnél hiba történt (ServRequ_DTCalledOf) "+ e.Message);
+            }
+            throw new ErrorServiceRequests("A listaelem keresése sikertelen (ServRequ_DTCalledOf)");
         }
         #endregion
 
@@ -179,8 +221,9 @@ namespace WFAThesisProject
         /// <returns>DataTable of GivenOut requests</returns>
         public DataTable createDataTableGivenOutRequests()
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             table = new DataTable();
+            table.Columns.Add("Srsz.", typeof(int));
             table.Columns.Add("Kérő neve", typeof(string));     //összevonva
             table.Columns.Add("Kérő területe", typeof(string));
             table.Columns.Add("Kérés dátuma", typeof(string));
@@ -195,8 +238,8 @@ namespace WFAThesisProject
                 requestGivenOut = modelRequestRead.getGivenOutRequests();
                 foreach (RequestRecordGivenOut r in requestGivenOut)
                 {
-                    table.Rows.Add(r.userKeroNev, r.userTerulet, r.keresDatum, r.teljesites, r.keresModosNev,
-                        r.termekNev, r.termekKiszerel);
+                    table.Rows.Add(r.keresId, r.userKeroNev, r.userTerulet, r.keresDatum, r.teljesites, r.keresModosNev,
+                        r.termekNev, r.termekKiszerel, r.termekBeszall);
                 }
             }
             catch (ErrorServiceCreateDataList e)
@@ -211,12 +254,24 @@ namespace WFAThesisProject
 
         }
         /// <summary>
-        /// gets the list of GivenOut requests
+        /// gets the element from GivenOut requests
         /// </summary>
-        /// <returns>list of GivenOutRequests</returns>
-        public RequestRecordGivenOut getChosenGivenOutRequest(int index)
+        /// <returns>GivenOutRequest container</returns>
+        public RequestRecordGivenOut getChosenGivenOutRequest(int requId)
         {
-            return requestGivenOut[index];
+            try
+            {
+                foreach (RequestRecordGivenOut rec in requestGivenOut)
+                {
+                    if (rec.keresId == requId)
+                        return rec;
+                }
+                throw new ErrorServiceRequests("A listaelem keresése sikertelen (ServRequ_DTCalledOf)");
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceRequests("A listaelem keresése sikertelen (ServRequ_DTCalledOf)");
+            }
         }
         #endregion
         //tested
@@ -226,19 +281,18 @@ namespace WFAThesisProject
         /// </summary>
         /// <param name="quantId">strippingID, to target the request</param>
         /// <param name="amountAbout">the amount of the request, to charge the store</param>
-        /// <param name="keresDatum">startDate of the request</param>
-        /// <param name="keroUserId">userID, who wanted that</param>
-        public void giveOutTheChosenProduct(int quantId, int amountAbout, 
-            string keresDatum, int keroUserId)
+        /// <param name="requId">DB identifier of the request</param>
+        /// <param name="userIdOfRequester">userID, who wanted that</param>
+        public void giveOutTheChosenProduct(int quantId, int amountAbout, int requId, int userIdOfRequester)
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
-            modelRequestWrite = new RequestsModelWirteOut(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
+            modelRequestWrite = new RequestsModelWirteOut(dbci, parentMain);
             string finalAmountAfterTheGivingOut;
-            string qualityIdThatUnderProcess;
+            string strippingIdThatUnderProcess;
             try
             {
-                qualityIdThatUnderProcess = Convert.ToString(quantId);
-                int amountBeforeTheChange = modelRequestRead.getTheActualAmountOfTheStripping(qualityIdThatUnderProcess);
+                strippingIdThatUnderProcess = Convert.ToString(quantId);
+                int amountBeforeTheChange = modelRequestRead.getTheActualAmountOfTheStripping(strippingIdThatUnderProcess);
                 if (amountBeforeTheChange >= amountAbout)
                 {
                     finalAmountAfterTheGivingOut = Convert.ToString(amountBeforeTheChange - amountAbout);
@@ -256,8 +310,8 @@ namespace WFAThesisProject
             }
             try
             {
-                modelRequestWrite.deleteRequestTableGiveOutARecord(userIdOfPoerator, keresDatum.Replace(".","-"),
-                    qualityIdThatUnderProcess, keroUserId.ToString(), finalAmountAfterTheGivingOut);
+                modelRequestWrite.deleteRequestTableGiveOutARecord(userIdOfOperator, requId.ToString(),
+                    strippingIdThatUnderProcess, userIdOfRequester.ToString(), finalAmountAfterTheGivingOut);
             }
             catch (ErrorServiceDeleteRecord e)
             {
@@ -278,13 +332,13 @@ namespace WFAThesisProject
         /// <param name="modosUserId">userID, who makes the prodess</param>
         /// <param name="quantId">strippingID, target request</param>
         /// <param name="amountAbout">the amount, that the request is about, needed to credit to the store</param>
-        /// <param name="keresDatum">stertDate, to target the request</param>
-        /// <param name="keroUserId">userId, who wanted that request</param>
+        /// <param name="requId">DB identifier to target the request</param>
+        /// <param name="userIdOfRequester">userId, who wanted that request</param>
         public void getBackTheChosenProductThatWereGivenOut(int quantId, int amountAbout,
-            string keresDatum, int keroUserId)
+            int requId, int userIdOfRequester)
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
-            modelRequestWrite = new RequestsModelWirteOut(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
+            modelRequestWrite = new RequestsModelWirteOut(dbci, parentMain);
             string finalAmountAfterTheGivingOut;
             string qualityIdThatUnderProcess;
             try
@@ -305,8 +359,8 @@ namespace WFAThesisProject
             }
             try
             {
-                modelRequestWrite.undeleteRequestTableGetBackARecord(userIdOfPoerator, keresDatum.Replace(".", "-"),
-                    qualityIdThatUnderProcess, keroUserId.ToString(), finalAmountAfterTheGivingOut);
+                modelRequestWrite.undeleteRequestTableGetBackARecord(userIdOfOperator, requId.ToString(),
+                    qualityIdThatUnderProcess, userIdOfRequester.ToString(), finalAmountAfterTheGivingOut);
             }
             catch (ErrorServiceRenewRecord e)
             {
@@ -328,16 +382,16 @@ namespace WFAThesisProject
         /// it inactivates an active record
         /// </summary>
         /// <param name="modUserId">userId, who does that</param>
-        /// <param name="reqStartDate">startDate of the target equest</param>
-        /// <param name="reqQuantId">strippingId of the target equest</param>
+        /// <param name="requId">DB identifier of the target request</param>
+ 
         /// <param name="reqUserId">userId, who wanted that</param>
-        public void deletAnActiveRequest(string reqStartDate, int reqQuantId, int reqUserId)
+        public void deletAnActiveRequest(int requId, int reqUserId)
         {
-            modelRequestWrite = new RequestsModelWirteOut(dbci, parent);
+            modelRequestWrite = new RequestsModelWirteOut(dbci, parentMain);
             try
             {
-                modelRequestWrite.deleteRequestTableActiveRecord(userIdOfPoerator, reqStartDate.Replace(".", "-"),
-                    reqQuantId.ToString(), reqUserId.ToString());
+                modelRequestWrite.deleteRequestTableActiveRecord(userIdOfOperator, requId.ToString(),
+                    reqUserId.ToString());
             }
             catch(ErrorServiceDeleteRecord e)
             {
@@ -351,17 +405,14 @@ namespace WFAThesisProject
         /// <summary>
         /// it reactivates a direct-deleted record by the stock-keeper
         /// </summary>
-        /// <param name="modUserId">userId, who does that</param>
-        /// <param name="reqStartDate">startDate of the target equest</param>
-        /// <param name="reqQuantId">strippingId of the target equest</param>
+        /// <param name="requId">DB identifier of the target request</param>
         /// <param name="reqUserId">userId, who wanted that</param>
-        public void undeletADeletedRequest(string reqStartDate, int reqQuantId, int reqUserId)
+        public void undeletADeletedRequest(int requId, int reqUserId)
         {
-            modelRequestWrite = new RequestsModelWirteOut(dbci, parent);
+            modelRequestWrite = new RequestsModelWirteOut(dbci, parentMain);
             try
             {
-                modelRequestWrite.undeletRequestTableDeletedRecord(userIdOfPoerator, reqStartDate.Replace(".", "-"), 
-                    reqQuantId.ToString(),
+                modelRequestWrite.undeletRequestTableDeletedRecord(userIdOfOperator, requId.ToString(), 
                     reqUserId.ToString());
             }
             catch (ErrorServiceRenewRecord e)
@@ -384,18 +435,18 @@ namespace WFAThesisProject
         /// <returns>list of strings with the productnames</returns>
         public List<string> getThePoolOfProducts()
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             List<string> productsList = new List<string>();
             try
             {
                 productListForUserChoose = modelRequestRead.getThePoolOfProducts();
                 foreach (ProductToChoose pc in productListForUserChoose)
                 {
-                    productsList.Add(pc.termekNev);
+                    productsList.Add(pc.termekNev + "_" + pc.beszallitoId);
                 }
 
             }
-            catch(ErrorServiceRequGetTheProdPool e)
+            catch(ErrorServiceGetTheProdPool e)
             {
                 throw new ErrorServiceRequests(e.Message);
             }
@@ -408,13 +459,15 @@ namespace WFAThesisProject
         /// <summary>
         /// defines and reads out the product in the list, that the user chosen out
         /// </summary>
-        /// <param name="kivTermekNev"></param>
+        /// <param name="kivTermekNevSzallito"></param>
         /// <returns></returns>
-        public int identifyTheProductIdInProductList(string kivTermekNev)
+        public int identifyTheProductIdInProductList(string kivTermekNevSzallito)
         {
             try
             {
-                ProductToChoose temp = productListForUserChoose.Find(x => x.termekNev == kivTermekNev);
+                string[] parts = kivTermekNevSzallito.Split('_');
+                ProductToChoose temp = productListForUserChoose.Find(x => x.termekNev == parts[0] 
+                            && x.beszallitoId == parts[1]);
                 return temp.termekMinId;
             }
             catch (Exception e)
@@ -424,13 +477,48 @@ namespace WFAThesisProject
 
         }
         /// <summary>
+        /// identify the chosen product's subcontractor durring modifing
+        /// </summary>
+        /// <param name="chosenProductionID_DurringModify"></param>
+        /// <returns>subcintractor name in string</returns>
+        public string getTheChosenProductsSubcontractor(int chosenProductionID_DurringModify)
+        {
+            try
+            {
+                ProductToChoose temp = productListForUserChoose.Find(x => x.termekMinId == chosenProductionID_DurringModify);
+                return temp.beszallitoId;
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceRequests("Ismeretlen hiba történt  (ServReq_identifProd) " + e.Message);
+            }
+        }
+        /*
+        /// <summary>
+        /// identify the old prodct's name that stored originally durring modify
+        /// </summary>
+        /// <param name="oldProductId"></param>
+        /// <returns></returns>
+        public string getTheChosenProductName(int oldProductId)
+        {
+            try
+            {
+                ProductToChoose temp = productListForUserChoose.Find(x => x.termekMinId == oldProductId);
+                return temp.beszallitoId;
+            }
+            catch (Exception e)
+            {
+                throw new ErrorServiceRequests("Ismeretlen hiba történt  (ServReq_identifProd) " + e.Message);
+            }
+        }*/
+        /// <summary>
         /// reads in the strippings of the chosen product
         /// </summary>
         /// <param name="kivTermekId">the product identifier</param>
         /// <returns>list of string with the stripping of the produvt</returns>
         public List<string> getThePoolOfStrippings(int kivTermekId)
         {
-            modelRequestRead = new RequestsModelReadIn(dbci, parent);
+            modelRequestRead = new RequestsModelReadIn(dbci, parentMain);
             List<string> strippingList = new List<string>();
             try
             {
@@ -445,7 +533,7 @@ namespace WFAThesisProject
                     strippingList.Add(sc.termekKiszerel.ToString());
                 }
             }
-            catch (ErrorServiceRequOrderGetTheStripPool e)
+            catch (ErrorServiceGetTheStripPool e)
             {
                 throw new ErrorServiceRequests(e.Message);
             }
@@ -475,14 +563,20 @@ namespace WFAThesisProject
         #endregion
         //tested
         #region makes change in Active Request
-        public void modifyTheActiveRecord(int newAmount, int newQuantId, string oldStartDate, 
-            int oldQuantId, int oldRequUserId)
+        /// <summary>
+        /// mediate the request change at active records
+        /// </summary>
+        /// <param name="newAmount">the new amount from the stripping</param>
+        /// <param name="newQuantId">the new stripping identifier</param>
+        /// <param name="requId">DB identifier of the request</param>
+        /// <param name="oldRequUserId">DB identifier of the requester</param>
+        public void modifyTheActiveRecord(int newAmount, int newQuantId, int requId, int oldRequUserId)
         {
             try
             {
-                modelRequestWrite = new RequestsModelWirteOut(dbci, parent);
-                modelRequestWrite.updateRequestTableAtARecord(userIdOfPoerator, newAmount.ToString(), newQuantId.ToString(),
-                    oldStartDate.Replace(".", "-"), oldQuantId.ToString(), oldRequUserId.ToString());
+                modelRequestWrite = new RequestsModelWirteOut(dbci, parentMain);
+                modelRequestWrite.updateRequestTableAtARecord(userIdOfOperator, newAmount.ToString(), 
+                    newQuantId.ToString(), requId.ToString(),  oldRequUserId.ToString());
             }
             catch(ErrorServiceUpdateRecord e)
             {

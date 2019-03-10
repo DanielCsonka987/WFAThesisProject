@@ -10,41 +10,57 @@ using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using PdfSharp.Pdf;
+using WFAThesisProject.Exceptions;
 using WFAThesisProject.UserNamePasswordManage;
 
-namespace WFAThesisProject.ProfileManage
+namespace WFAThesisProject.ServProfileManage
 {
     public class PersonalProfileModelPDFhc
     {
         private Document doc;
         private Section thePage;
         private Paragraph paragraph;
-        private string path;
         //it works with PDFSharp-MigraDoc-GDI by empria Software BmbH v. 1.32.4334
         public PersonalProfileModelPDFhc(SetOfUserDetails userDet, string pathOfOutput, List<string> chem,
             List<string[]> accid)
         {
             string filename = userDet.userLastName + "Adatlapja" + DateTime.Today.Year.ToString() +
                     DateTime.Today.Month.ToString() + DateTime.Today.Day.ToString() + ".pdf";
+            int indexer = 0;
             try
             {
                 if (!Directory.Exists(pathOfOutput))
                 {
                     Directory.CreateDirectory(pathOfOutput);
+
                 }
-                this.path += pathOfOutput + filename;
+                while (File.Exists(pathOfOutput + filename))
+                {
+                    filename = "Rendeles_" + userDet.userLastName +  "_"
+                        + DateTime.Today.Year.ToString() + DateTime.Today.Month.ToString()
+                        + DateTime.Today.Day.ToString() + "_" + indexer + ".pdf";
+                    indexer++;
+                }
             }
             catch (Exception e)
             {
-                throw new ErrorMigraDocFileCreation("Probléma van a fájl célmappájával (ModPers-PDFfolder) " + e.Message);
-
+                throw new ErrorMigraDocFileCreation("Probléma van a fájl nevével vagy elérésével (ModPersPDFfolder) "
+                    + e.Message);
             }
-            adjustPageMetaDatas(userDet);
-            adjustHeader(userDet);
-            addChemicalsToPDF(chem);
-            addAccidentsToPDF(accid);
-            addFooterToPDF();
-            finishPDF(path);
+            try
+            {
+                adjustPageMetaDatas(userDet);
+                adjustHeader(userDet);
+                addChemicalsToPDF(chem);
+                addAccidentsToPDF(accid);
+                addFooterToPDF();
+                finishPDF(pathOfOutput, filename);
+            }
+            catch (Exception e)
+            {
+                throw new ErrorMigraDocFileCreation("Probléma van a fájl létrehozásával (ModPersPDF) "
+                    + e.Message);
+            }
         }
 
         #region passive adjustors of the healthcare-form creation
@@ -172,7 +188,9 @@ namespace WFAThesisProject.ProfileManage
                 }
             }
         }
-
+        /// <summary>
+        /// adjust the footer on the PDF
+        /// </summary>
         private void addFooterToPDF()
         {
             Section footer = doc.LastSection;
@@ -185,20 +203,30 @@ namespace WFAThesisProject.ProfileManage
         /// finishes the creating of the healthcare-form pdf
         /// </summary>
         /// <param name="destination">the final destination of the pdf file</param>
-        public void finishPDF(string path)
+        public void finishPDF(string outputFolder, string filename)
         {
             try
             {
                 PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
                 renderer.Document = doc;
                 renderer.RenderDocument();
-                renderer.PdfDocument.Save(path);
+                renderer.PdfDocument.Save(outputFolder+filename);
             }
             catch (Exception e)
             {
-                throw new ErrorMigraDocFileCreation("Nem sikerült a PDF fájl létrehozása (ModPersPDFMod) " + e.Message);
+                throw new ErrorMigraDocFileCreation("Nem sikerült a PDF fájl létrehozása (ModPersPDF) " + e.Message);
             }
-            Process.Start(path);
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WorkingDirectory = Path.GetDirectoryName(outputFolder);
+                startInfo.FileName = filename;
+                Process.Start(startInfo);
+            }
+            catch (Exception e)
+            {
+                throw new ErrorMigraDocFileOpening("Nem sikerült a PDF fájl megnyitása (ModPersPDF) " + e.Message);
+            }
         }
         #endregion
     }

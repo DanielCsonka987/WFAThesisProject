@@ -26,16 +26,16 @@ namespace WFAThesisProject
 
         private string queryProductsFullTableAct =
         "SELECT raktminoseg.termek_nev, raktminoseg.beszallito_id, raktminoseg.termek_leir, raktminoseg.termek_egyseg," +   //0-3
-        " raktminoseg.termek_biztons, raktminoseg.termek_veszely, raktminoseg.termek_min_id," +     //4-6
-        " raktmennyiseg.termek_kiszerel, raktmennyiseg.termek_mennyiseg, raktmennyiseg.termek_kod, raktmennyiseg.termek_hely," +    //7-10
-        " raktmennyiseg.termek_medatum, raktmennyiseg.termek_memodosit, raktmennyiseg.termek_meerveny" +    //11-13
+        " raktminoseg.termek_biztons, raktminoseg.termek_veszely, raktminoseg.termek_min_id, raktmennyiseg.termek_quant_id," +     //4-7
+        " raktmennyiseg.termek_kiszerel, raktmennyiseg.termek_mennyiseg, raktmennyiseg.termek_kod, raktmennyiseg.termek_hely," +    //8-11
+        " raktmennyiseg.termek_medatum, raktmennyiseg.termek_memodosit, raktmennyiseg.termek_meerveny" +    //12-14
         " FROM raktminoseg, raktmennyiseg" +
         " WHERE raktminoseg.termek_min_id = raktmennyiseg.termek_min_id" +
         " AND raktminoseg.termek_mierveny = 1 AND raktmennyiseg.termek_meerveny = 1" +
         " ORDER BY raktminoseg.termek_min_id, raktminoseg.termek_nev, raktmennyiseg.termek_kiszerel";
         private string queryProdtsFullTableDeleted =
         "SELECT raktminoseg.termek_nev, raktminoseg.beszallito_id, raktminoseg.termek_leir, raktminoseg.termek_egyseg," +
-        " raktminoseg.termek_biztons, raktminoseg.termek_veszely, raktminoseg.termek_min_id," +
+        " raktminoseg.termek_biztons, raktminoseg.termek_veszely, raktminoseg.termek_min_id, raktmennyiseg.termek_quant_id," +
         " raktmennyiseg.termek_kiszerel, raktmennyiseg.termek_mennyiseg, raktmennyiseg.termek_kod, raktmennyiseg.termek_hely," +
         " raktmennyiseg.termek_medatum, raktmennyiseg.termek_memodosit, raktmennyiseg.termek_meerveny" +
         " FROM raktminoseg, raktmennyiseg" +
@@ -85,15 +85,15 @@ namespace WFAThesisProject
             row.productQantUnit = record[3];
             row.productSheet = record[4];
             row.productDanger = Convert.ToInt32(record[5]);
-            row.productIndex = Convert.ToInt32(record[6]);
-
-            row.productStripping = Convert.ToInt32(record[7]);
-            row.productQuantity = Convert.ToInt32(record[8]);
-            row.productBarcode = record[9];
-            row.productPlace = record[10];
-            row.productModifiedThen = record[11];
-            row.productModifiedBy = Convert.ToInt32(record[12]);
-            row.productValidity = record[13] == "1" ? true : false;
+            row.producQualId = Convert.ToInt32(record[6]);
+            row.strippId = Convert.ToInt32(record[7]);
+            row.productStripping = Convert.ToInt32(record[8]);
+            row.productQuantity = Convert.ToInt32(record[9]);
+            row.productBarcode = record[10];
+            row.productPlace = record[11];
+            row.productModifiedThen = record[12];
+            row.productModifiedBy = Convert.ToInt32(record[13]);
+            row.productValidity = record[14] == "1" ? true : false;
 
             return row;
         }
@@ -161,7 +161,7 @@ namespace WFAThesisProject
             row.productQantUnit = record[3];    //quantity unit
             row.productSheet = record[4];       //datasheet
             row.productDanger = Convert.ToInt32(record[5]); //danger number
-            row.productIndex = Convert.ToInt32(record[6]);  //index of table (prim.key)
+            row.productQualId = Convert.ToInt32(record[6]);  //index of table (prim.key)
 
             row.productModifiedBy = Convert.ToInt32(record[7]); //user_id of profile
             row.productModifiedThen = record[8];                //when changed the record

@@ -16,7 +16,6 @@ namespace WFAThesisProject
 {
     public partial class FormMainWindow : MetroFramework.Forms.MetroForm
     {
-        private SetOfUserRights setOfUserRights;
         private SetOfUserDetails setOfUserDetails;
         private Form parentLogInWindow;
         private UserConnDetails dbci;
@@ -67,6 +66,11 @@ namespace WFAThesisProject
             userOwnDetailsManage.Show();
             this.Visible = false;
         }
+
+        private void mPnlLogoArea_Click(object sender, EventArgs e)
+        {
+            controller.loadInTheInitialView();
+        }
     }
 
     /// <summary>
@@ -78,6 +82,8 @@ namespace WFAThesisProject
         ACCIDENTSMAN,
         PRODUCTSMANStripAct, PRODUCTSMANStripHis, PRODUCTSMANQualiAct, PRODUCTSMANQualiHis,
         REQUESTSMANActive, REQUESTSMANGivenOut, REQUESTSMANCalledOff, REQUESTSMANDeleted,
-        ORDERINGMAN,
+        ORDERINGNoted, ORDERINGCancelled, ORDERINGBooked, ORDERINGArrived, ORDERINGMissing, ORDERINGFailed,
         SUBCONTRACTORSMAN }
+
+    public enum FromMainServiceViewStandard { READ, OTHER}
 }

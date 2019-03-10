@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateOrderingTableDatas.cs" />
+    <Compile Include="CreateOrderingTableAdditionDatas.cs" />
+    <Compile Include="CreateOrderingTableBasicDatas.cs" />
     <Compile Include="CreateQuantityTableDatas.cs" />
     <Compile Include="CreateRequirementTableDatas.cs" />
     <Compile Include="Program.cs" />

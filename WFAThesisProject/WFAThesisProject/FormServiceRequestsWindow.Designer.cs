@@ -56,6 +56,7 @@
             this.mLabelOfProductCmb = new MetroFramework.Controls.MetroLabel();
             this.mTxtBxBeszall = new MetroFramework.Controls.MetroTextBox();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.mChckBxModifyDiffProd = new MetroFramework.Controls.MetroCheckBox();
             this.metroPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderFail)).BeginInit();
             this.SuspendLayout();
@@ -73,7 +74,7 @@
             this.metroPanel1.HorizontalScrollbarSize = 10;
             this.metroPanel1.Location = new System.Drawing.Point(0, 11);
             this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(200, 451);
+            this.metroPanel1.Size = new System.Drawing.Size(200, 461);
             this.metroPanel1.TabIndex = 1;
             this.metroPanel1.VerticalScrollbarBarColor = true;
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
@@ -118,9 +119,9 @@
             // 
             this.mCbBxProducts.FormattingEnabled = true;
             this.mCbBxProducts.ItemHeight = 23;
-            this.mCbBxProducts.Location = new System.Drawing.Point(215, 241);
+            this.mCbBxProducts.Location = new System.Drawing.Point(217, 243);
             this.mCbBxProducts.Name = "mCbBxProducts";
-            this.mCbBxProducts.Size = new System.Drawing.Size(289, 29);
+            this.mCbBxProducts.Size = new System.Drawing.Size(288, 29);
             this.mCbBxProducts.TabIndex = 3;
             this.mCbBxProducts.UseSelectable = true;
             this.mCbBxProducts.SelectedIndexChanged += new System.EventHandler(this.mCbBxProducts_SelectedIndexChanged);
@@ -151,7 +152,7 @@
             this.mTxtBxAmount.CustomButton.UseSelectable = true;
             this.mTxtBxAmount.CustomButton.Visible = false;
             this.mTxtBxAmount.Lines = new string[0];
-            this.mTxtBxAmount.Location = new System.Drawing.Point(399, 331);
+            this.mTxtBxAmount.Location = new System.Drawing.Point(400, 385);
             this.mTxtBxAmount.MaxLength = 32767;
             this.mTxtBxAmount.Name = "mTxtBxAmount";
             this.mTxtBxAmount.PasswordChar = '\0';
@@ -181,7 +182,7 @@
             this.mTxtBxStartDate.CustomButton.UseSelectable = true;
             this.mTxtBxStartDate.CustomButton.Visible = false;
             this.mTxtBxStartDate.Lines = new string[0];
-            this.mTxtBxStartDate.Location = new System.Drawing.Point(399, 139);
+            this.mTxtBxStartDate.Location = new System.Drawing.Point(400, 125);
             this.mTxtBxStartDate.MaxLength = 32767;
             this.mTxtBxStartDate.Name = "mTxtBxStartDate";
             this.mTxtBxStartDate.PasswordChar = '\0';
@@ -211,7 +212,7 @@
             this.mTxtBxEndDate.CustomButton.UseSelectable = true;
             this.mTxtBxEndDate.CustomButton.Visible = false;
             this.mTxtBxEndDate.Lines = new string[0];
-            this.mTxtBxEndDate.Location = new System.Drawing.Point(399, 187);
+            this.mTxtBxEndDate.Location = new System.Drawing.Point(400, 173);
             this.mTxtBxEndDate.MaxLength = 32767;
             this.mTxtBxEndDate.Name = "mTxtBxEndDate";
             this.mTxtBxEndDate.PasswordChar = '\0';
@@ -241,7 +242,7 @@
             this.mTxtBxReqName.CustomButton.UseSelectable = true;
             this.mTxtBxReqName.CustomButton.Visible = false;
             this.mTxtBxReqName.Lines = new string[0];
-            this.mTxtBxReqName.Location = new System.Drawing.Point(215, 139);
+            this.mTxtBxReqName.Location = new System.Drawing.Point(216, 125);
             this.mTxtBxReqName.MaxLength = 32767;
             this.mTxtBxReqName.Name = "mTxtBxReqName";
             this.mTxtBxReqName.PasswordChar = '\0';
@@ -262,7 +263,7 @@
             // 
             // 
             this.mTxtBxReqArea.CustomButton.Image = null;
-            this.mTxtBxReqArea.CustomButton.Location = new System.Drawing.Point(136, 1);
+            this.mTxtBxReqArea.CustomButton.Location = new System.Drawing.Point(134, 1);
             this.mTxtBxReqArea.CustomButton.Name = "";
             this.mTxtBxReqArea.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.mTxtBxReqArea.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -271,7 +272,7 @@
             this.mTxtBxReqArea.CustomButton.UseSelectable = true;
             this.mTxtBxReqArea.CustomButton.Visible = false;
             this.mTxtBxReqArea.Lines = new string[0];
-            this.mTxtBxReqArea.Location = new System.Drawing.Point(214, 187);
+            this.mTxtBxReqArea.Location = new System.Drawing.Point(217, 173);
             this.mTxtBxReqArea.MaxLength = 32767;
             this.mTxtBxReqArea.Name = "mTxtBxReqArea";
             this.mTxtBxReqArea.PasswordChar = '\0';
@@ -280,7 +281,7 @@
             this.mTxtBxReqArea.SelectionLength = 0;
             this.mTxtBxReqArea.SelectionStart = 0;
             this.mTxtBxReqArea.ShortcutsEnabled = true;
-            this.mTxtBxReqArea.Size = new System.Drawing.Size(158, 23);
+            this.mTxtBxReqArea.Size = new System.Drawing.Size(156, 23);
             this.mTxtBxReqArea.TabIndex = 9;
             this.mTxtBxReqArea.UseSelectable = true;
             this.mTxtBxReqArea.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -299,7 +300,7 @@
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(215, 117);
+            this.metroLabel2.Location = new System.Drawing.Point(216, 103);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(105, 19);
             this.metroLabel2.TabIndex = 11;
@@ -308,7 +309,7 @@
             // metroLabel3
             // 
             this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(214, 165);
+            this.metroLabel3.Location = new System.Drawing.Point(215, 151);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(122, 19);
             this.metroLabel3.TabIndex = 12;
@@ -317,7 +318,7 @@
             // metroLabel9
             // 
             this.metroLabel9.AutoSize = true;
-            this.metroLabel9.Location = new System.Drawing.Point(215, 219);
+            this.metroLabel9.Location = new System.Drawing.Point(217, 221);
             this.metroLabel9.Name = "metroLabel9";
             this.metroLabel9.Size = new System.Drawing.Size(56, 19);
             this.metroLabel9.TabIndex = 13;
@@ -335,7 +336,7 @@
             // metroLabel6
             // 
             this.metroLabel6.AutoSize = true;
-            this.metroLabel6.Location = new System.Drawing.Point(397, 306);
+            this.metroLabel6.Location = new System.Drawing.Point(398, 360);
             this.metroLabel6.Name = "metroLabel6";
             this.metroLabel6.Size = new System.Drawing.Size(74, 19);
             this.metroLabel6.TabIndex = 15;
@@ -344,7 +345,7 @@
             // metroLabel7
             // 
             this.metroLabel7.AutoSize = true;
-            this.metroLabel7.Location = new System.Drawing.Point(399, 117);
+            this.metroLabel7.Location = new System.Drawing.Point(400, 103);
             this.metroLabel7.Name = "metroLabel7";
             this.metroLabel7.Size = new System.Drawing.Size(92, 19);
             this.metroLabel7.TabIndex = 16;
@@ -353,7 +354,7 @@
             // metroLabel8
             // 
             this.metroLabel8.AutoSize = true;
-            this.metroLabel8.Location = new System.Drawing.Point(399, 165);
+            this.metroLabel8.Location = new System.Drawing.Point(400, 151);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Size = new System.Drawing.Size(63, 19);
             this.metroLabel8.TabIndex = 17;
@@ -419,7 +420,7 @@
             // mLabelOfProductCmb
             // 
             this.mLabelOfProductCmb.AutoSize = true;
-            this.mLabelOfProductCmb.Location = new System.Drawing.Point(215, 273);
+            this.mLabelOfProductCmb.Location = new System.Drawing.Point(217, 199);
             this.mLabelOfProductCmb.Name = "mLabelOfProductCmb";
             this.mLabelOfProductCmb.Size = new System.Drawing.Size(0, 0);
             this.mLabelOfProductCmb.TabIndex = 21;
@@ -439,7 +440,7 @@
             this.mTxtBxBeszall.CustomButton.UseSelectable = true;
             this.mTxtBxBeszall.CustomButton.Visible = false;
             this.mTxtBxBeszall.Lines = new string[0];
-            this.mTxtBxBeszall.Location = new System.Drawing.Point(399, 385);
+            this.mTxtBxBeszall.Location = new System.Drawing.Point(400, 331);
             this.mTxtBxBeszall.MaxLength = 32767;
             this.mTxtBxBeszall.Name = "mTxtBxBeszall";
             this.mTxtBxBeszall.PasswordChar = '\0';
@@ -457,17 +458,30 @@
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(399, 362);
+            this.metroLabel4.Location = new System.Drawing.Point(400, 308);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(66, 19);
             this.metroLabel4.TabIndex = 23;
             this.metroLabel4.Text = "Beszállító:";
             // 
+            // mChckBxModifyDiffProd
+            // 
+            this.mChckBxModifyDiffProd.AutoSize = true;
+            this.mChckBxModifyDiffProd.Location = new System.Drawing.Point(214, 418);
+            this.mChckBxModifyDiffProd.Name = "mChckBxModifyDiffProd";
+            this.mChckBxModifyDiffProd.Size = new System.Drawing.Size(174, 15);
+            this.mChckBxModifyDiffProd.TabIndex = 24;
+            this.mChckBxModifyDiffProd.Text = "Új termék beállítások lesznek";
+            this.mChckBxModifyDiffProd.UseSelectable = true;
+            this.mChckBxModifyDiffProd.Visible = false;
+            this.mChckBxModifyDiffProd.CheckedChanged += new System.EventHandler(this.mChckBxModifyWithDiffProd_CheckedChanged);
+            // 
             // FormServiceRequestsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 446);
+            this.ClientSize = new System.Drawing.Size(530, 456);
+            this.Controls.Add(this.mChckBxModifyDiffProd);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.mTxtBxBeszall);
             this.Controls.Add(this.mLabelOfProductCmb);
@@ -529,5 +543,6 @@
         private MetroFramework.Controls.MetroLabel mLabelOfProductCmb;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroTextBox mTxtBxBeszall;
+        private MetroFramework.Controls.MetroCheckBox mChckBxModifyDiffProd;
     }
 }

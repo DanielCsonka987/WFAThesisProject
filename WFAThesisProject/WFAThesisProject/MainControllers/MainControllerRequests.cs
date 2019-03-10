@@ -12,30 +12,37 @@ namespace WFAThesisProject
     {
         private FormServiceRequestsWindow serviceRequWindow;
 
-        private void initRequestSercBasicEvents(RightLevels rightToManageRequests, Control tileRequest)
+        private void initRequestServBasicEvents(RightLevels rightToManageRequests, Control tileRequest)
         {
             tileRequest.Click += (e, o) => 
             {
+                removeDoubleClickEvent(mgrid);
+                mgrid.Visible = true;
                 actServiceForSubEvents = FormMainServiceMode.REQUESTSMANActive;
                 requestService = new ServiceRequests(dbci, mainWindow, setOfUserDetails.userId);
                 panelOfCommLine.Visible = false;
                 if (rightToManageRequests == RightLevels.READ)
                 {
-                    loadAppropiateRequestGridView();
+                    actServiceViewStandard = FromMainServiceViewStandard.READ;
+                    loadAppropriateRequestGridView();
+                    loadAppropiateRequestCommandLineView();
+                    initializeInTheAlternativeRequCommandLineButton();
                     initializeRequGridViewEvent();
                 }
                 else if (rightToManageRequests == RightLevels.MODiFY)
                 {
-                    loadAppropiateRequestGridView();
-                    initializeRequGridViewEvent();
+                    actServiceViewStandard = FromMainServiceViewStandard.OTHER;
+                    loadAppropriateRequestGridView();
                     loadAppropiateRequestCommandLineView();
-                    initializeConnamdLineEvents();
+                    initializeRequConnamdLineEvents();
                 }
             };
         }
 
-
-        private void initializeConnamdLineEvents()
+        /// <summary>
+        /// adjust the CommandLine buttons events - case of MODIFY persmission
+        /// </summary>
+        private void initializeRequConnamdLineEvents()
         {
             setTheNewRequEventBtn1();
             setTheNewRequEventBtn2();
@@ -44,39 +51,80 @@ namespace WFAThesisProject
             setTheNewRequEventBtn5();
             setTheNewRequEventBtn6();
         }
-
-
+        /// <summary>
+        /// adjust the alternative CommandLine button event - case of READ permission
+        /// </summary>
+        private void initializeInTheAlternativeRequCommandLineButton()
+        {
+            setTheNewRequEventBtn6();
+        }
+        /// <summary>
+        /// adjust the GridView event - case of READ permission
+        /// </summary>
         private void initializeRequGridViewEvent()
         {
-            removeDoubleClickEvent(mgrid);
             mgrid.DoubleClick += (w, k) =>
             {
                 if (mgrid.SelectedRows[0].Index != -1)
                 {
-                    if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANActive)
+                    try
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenActiveRequest(index),
-                            RequestWindowPuropse.DetailsOfActive, mainWindow, requestService);
-                    }
-                    else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANCalledOff)
-                    {
-                        int index = mgrid.SelectedRows[0].Index;
-                        serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenCalledOffRequest(index),
-                            RequestWindowPuropse.DetailsOfCancelled, mainWindow, requestService);
-                    }
-                    else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANDeleted)
-                    {
-                        int index = mgrid.SelectedRows[0].Index;
-                        serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenDeletedRequest(index),
-                            RequestWindowPuropse.DetailsOfDeleted, mainWindow, requestService);
+                        if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANActive)
+                        {
+                            int requId = 0;
+
+                            int indexInGrid = mgrid.SelectedRows[0].Index;
+                            requId = (int)mgrid.Rows[indexInGrid].Cells[0].Value;
+                            if (requId != 0)
+                            {
+                                serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenActiveRequest(requId),
+                                RequestWindowPuropse.DetailsOfActive, mainWindow, requestService);
+                            }
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANCalledOff)
+                        {
+                            int requId = 0;
+                            int indexInGrid = mgrid.SelectedRows[0].Index;
+                            requId = (int)mgrid.Rows[indexInGrid].Cells[0].Value;
+                            if (requId != 0)
+                            {
+                                serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenCalledOffRequest(requId),
+                                RequestWindowPuropse.DetailsOfCancelled, mainWindow, requestService);
+                            }
+
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANDeleted)
+                        {
+                            int requId = 0;
+                            int indexInGrid = mgrid.SelectedRows[0].Index;
+                            requId = (int)mgrid.Rows[indexInGrid].Cells[0].Value;
+                            if (requId != 0)
+                            {
+                                serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenDeletedRequest(requId),
+                                RequestWindowPuropse.DetailsOfDeleted, mainWindow, requestService);
+                            }
+
+                        }
+                        else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANGivenOut)
+                        {
+                            int requId = 0;
+                            int indexInGrid = mgrid.SelectedRows[0].Index;
+                            requId = (int)mgrid.Rows[indexInGrid].Cells[0].Value;
+                            if (requId != 0)
+                            {
+                                serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenGivenOutRequest(requId),
+                                RequestWindowPuropse.DetailsOfGivenOut, mainWindow, requestService);
+                            }
+                        }
 
                     }
-                    else if (actServiceForSubEvents == FormMainServiceMode.REQUESTSMANGivenOut)
+                    catch (ErrorServiceRequests e)
                     {
-                        int index = mgrid.SelectedRows[0].Index;
-                        serviceRequWindow = new FormServiceRequestsWindow(requestService.getChosenGivenOutRequest(index),
-                            RequestWindowPuropse.DetailsOfGivenOut, mainWindow, requestService);
+                        errorHandle(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        errorHandle("Ismeretlen hiba történt (ContrMainGrid) " + e.Message);
                     }
                 }
             };

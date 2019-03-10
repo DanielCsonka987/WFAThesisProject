@@ -21,7 +21,7 @@ namespace WFAThesisProject
         public ProductsModelSheets(string externalSheet, string locallySheet)
         {
             this.downloadPathOfSheets = externalSheet;
-            this.locallyStorePathOfSheets = "";
+            this.locallyStorePathOfSheets = locallySheet;
         }
         /// <summary>
         /// manages the downloading and/or opening the specific sheet - depends of the necessity
@@ -31,14 +31,17 @@ namespace WFAThesisProject
         {
             try
             {
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.WorkingDirectory = Path.GetDirectoryName(locallyStorePathOfSheets);
+                info.FileName = sheetName;
                 if (File.Exists(locallyStorePathOfSheets + sheetName))
                 {
-                    Process.Start(locallyStorePathOfSheets + sheetName);
+                    Process.Start(info);
                 }
                 else
                 {
-                    checkTheSheetNeedsToDownload(sheetName);
-                    Process.Start(locallyStorePathOfSheets + sheetName);
+                    sheetNeedsToDownload(sheetName);
+                    Process.Start(info);
                 }
             }
             catch (Exception e)
@@ -47,12 +50,12 @@ namespace WFAThesisProject
             }
         }
 
-        private void checkTheSheetNeedsToDownload(string sheetName)
+        private void sheetNeedsToDownload(string sheetName)
         {
             try
             {
                 WebClient server = new WebClient();
-                server.DownloadFile(downloadPathOfSheets + sheetName, sheetName);
+                server.DownloadFile(downloadPathOfSheets + sheetName, locallyStorePathOfSheets+sheetName);
 
             }
             catch (Exception e)
